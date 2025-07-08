@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Edit, Trash2, Eye, Search } from 'lucide-react';
-import { poems } from '../../data/mockData';
+import { useContentStore } from '../../stores/contentStore';
+import { useToast } from '../../hooks/use-toast';
 import Modal from '../ui/modal';
 import PoemForm from './PoemForm';
 
@@ -11,6 +12,9 @@ const AdminPoems = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedPoem, setSelectedPoem] = useState(null);
+  
+  const { poems, createPoem, updatePoem, deletePoem } = useContentStore();
+  const { toast } = useToast();
 
   const filteredPoems = poems.filter(poem =>
     poem.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -24,9 +28,31 @@ const AdminPoems = () => {
 
   const handleDelete = (poemId) => {
     if (window.confirm('Are you sure you want to delete this poem?')) {
-      console.log('Deleting poem:', poemId);
-      // TODO: Implement actual delete functionality
+      deletePoem(poemId);
+      toast({
+        title: "Success",
+        description: "Poem deleted successfully",
+      });
     }
+  };
+
+  const handleCreate = (data) => {
+    createPoem(data);
+    setIsCreateModalOpen(false);
+    toast({
+      title: "Success",
+      description: "Poem created successfully",
+    });
+  };
+
+  const handleUpdate = (data) => {
+    updatePoem(selectedPoem.id, data);
+    setIsEditModalOpen(false);
+    setSelectedPoem(null);
+    toast({
+      title: "Success",
+      description: "Poem updated successfully",
+    });
   };
 
   return (
@@ -93,7 +119,7 @@ const AdminPoems = () => {
               
               <div className="flex space-x-2">
                 <button
-                  onClick={() => window.open(`/poems/${poem.id}`, '_blank')}
+                  onClick={() => window.open(`/poems/${poem.slug}`, '_blank')}
                   className="flex-1 bg-blue-50 text-blue-600 hover:bg-blue-100 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-1"
                 >
                   <Eye size={16} />
@@ -122,10 +148,7 @@ const AdminPoems = () => {
       <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)}>
         <PoemForm
           onClose={() => setIsCreateModalOpen(false)}
-          onSave={(data) => {
-            console.log('Creating poem:', data);
-            setIsCreateModalOpen(false);
-          }}
+          onSave={handleCreate}
         />
       </Modal>
 
@@ -134,10 +157,7 @@ const AdminPoems = () => {
         <PoemForm
           poem={selectedPoem}
           onClose={() => setIsEditModalOpen(false)}
-          onSave={(data) => {
-            console.log('Updating poem:', data);
-            setIsEditModalOpen(false);
-          }}
+          onSave={handleUpdate}
         />
       </Modal>
     </div>

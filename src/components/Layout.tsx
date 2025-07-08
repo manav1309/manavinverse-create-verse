@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import { Toaster } from './ui/toaster';
 import { useLocation } from 'react-router-dom';
 
 interface LayoutProps {
@@ -24,7 +25,12 @@ const Layout = ({ children }: LayoutProps) => {
   }, []);
 
   if (isAdminPage) {
-    return <div className="min-h-screen bg-background">{children}</div>;
+    return (
+      <div className="min-h-screen bg-background">
+        {children}
+        <Toaster />
+      </div>
+    );
   }
 
   return (
@@ -34,6 +40,7 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
       <Footer showAnimation={!isContactPage} />
+      <Toaster />
     </div>
   );
 };

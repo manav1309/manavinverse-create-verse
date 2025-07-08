@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Edit, Trash2, Eye, Search } from 'lucide-react';
-import { blogs } from '../../data/mockData';
+import { useContentStore } from '../../stores/contentStore';
+import { useToast } from '../../hooks/use-toast';
 import Modal from '../ui/modal';
 import BlogForm from './BlogForm';
 
@@ -11,6 +12,9 @@ const AdminBlogs = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
+  
+  const { blogs, createBlog, updateBlog, deleteBlog } = useContentStore();
+  const { toast } = useToast();
 
   const filteredBlogs = blogs.filter(blog =>
     blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -24,9 +28,31 @@ const AdminBlogs = () => {
 
   const handleDelete = (blogId) => {
     if (window.confirm('Are you sure you want to delete this blog post?')) {
-      console.log('Deleting blog:', blogId);
-      // TODO: Implement actual delete functionality
+      deleteBlog(blogId);
+      toast({
+        title: "Success",
+        description: "Blog post deleted successfully",
+      });
     }
+  };
+
+  const handleCreate = (data) => {
+    createBlog(data);
+    setIsCreateModalOpen(false);
+    toast({
+      title: "Success", 
+      description: "Blog post created successfully",
+    });
+  };
+
+  const handleUpdate = (data) => {
+    updateBlog(selectedBlog.id, data);
+    setIsEditModalOpen(false);
+    setSelectedBlog(null);
+    toast({
+      title: "Success",
+      description: "Blog post updated successfully",
+    });
   };
 
   return (
@@ -118,7 +144,7 @@ const AdminBlogs = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
                       <button
-                        onClick={() => window.open(`/blogs/${blog.id}`, '_blank')}
+                        onClick={() => window.open(`/blogs/${blog.slug}`, '_blank')}
                         className="text-blue-600 hover:text-blue-900 p-1 rounded"
                         title="View"
                       >
@@ -151,10 +177,7 @@ const AdminBlogs = () => {
       <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)}>
         <BlogForm
           onClose={() => setIsCreateModalOpen(false)}
-          onSave={(data) => {
-            console.log('Creating blog:', data);
-            setIsCreateModalOpen(false);
-          }}
+          onSave={handleCreate}
         />
       </Modal>
 
@@ -163,10 +186,7 @@ const AdminBlogs = () => {
         <BlogForm
           blog={selectedBlog}
           onClose={() => setIsEditModalOpen(false)}
-          onSave={(data) => {
-            console.log('Updating blog:', data);
-            setIsEditModalOpen(false);
-          }}
+          onSave={handleUpdate}
         />
       </Modal>
     </div>

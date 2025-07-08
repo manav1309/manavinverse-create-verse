@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Edit, Trash2, Eye, Search } from 'lucide-react';
-import { articles } from '../../data/mockData';
+import { useContentStore } from '../../stores/contentStore';
+import { useToast } from '../../hooks/use-toast';
 import Modal from '../ui/modal';
 import ArticleForm from './ArticleForm';
 
@@ -11,6 +12,9 @@ const AdminArticles = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
+  
+  const { articles, createArticle, updateArticle, deleteArticle } = useContentStore();
+  const { toast } = useToast();
 
   const filteredArticles = articles.filter(article =>
     article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -24,9 +28,31 @@ const AdminArticles = () => {
 
   const handleDelete = (articleId) => {
     if (window.confirm('Are you sure you want to delete this article?')) {
-      console.log('Deleting article:', articleId);
-      // TODO: Implement actual delete functionality
+      deleteArticle(articleId);
+      toast({
+        title: "Success",
+        description: "Article deleted successfully",
+      });
     }
+  };
+
+  const handleCreate = (data) => {
+    createArticle(data);
+    setIsCreateModalOpen(false);
+    toast({
+      title: "Success",
+      description: "Article created successfully",
+    });
+  };
+
+  const handleUpdate = (data) => {
+    updateArticle(selectedArticle.id, data);
+    setIsEditModalOpen(false);
+    setSelectedArticle(null);
+    toast({
+      title: "Success",
+      description: "Article updated successfully",
+    });
   };
 
   return (
@@ -118,7 +144,7 @@ const AdminArticles = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
                       <button
-                        onClick={() => window.open(`/articles/${article.id}`, '_blank')}
+                        onClick={() => window.open(`/articles/${article.slug}`, '_blank')}
                         className="text-blue-600 hover:text-blue-900 p-1 rounded"
                         title="View"
                       >
@@ -151,10 +177,7 @@ const AdminArticles = () => {
       <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)}>
         <ArticleForm
           onClose={() => setIsCreateModalOpen(false)}
-          onSave={(data) => {
-            console.log('Creating article:', data);
-            setIsCreateModalOpen(false);
-          }}
+          onSave={handleCreate}
         />
       </Modal>
 
@@ -163,10 +186,7 @@ const AdminArticles = () => {
         <ArticleForm
           article={selectedArticle}
           onClose={() => setIsEditModalOpen(false)}
-          onSave={(data) => {
-            console.log('Updating article:', data);
-            setIsEditModalOpen(false);
-          }}
+          onSave={handleUpdate}
         />
       </Modal>
     </div>
