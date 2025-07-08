@@ -151,6 +151,41 @@ The soul begins to heal.`,
   }
 ];
 
+// Author information
+export const authorInfo = {
+  name: 'Manav',
+  image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
+  bio: 'A passionate writer and digital storyteller who explores the intersection of technology, creativity, and human experience. With over a decade of experience in crafting compelling narratives, Manav brings unique perspectives to contemporary issues through thoughtful prose and evocative poetry.',
+  experience: [
+    'Digital Content Strategy for Fortune 500 companies',
+    'Published author with 3 books and 100+ articles',
+    'Creative Writing Workshop facilitator',
+    'Keynote speaker at international conferences'
+  ],
+  achievements: [
+    'Winner of the Digital Storytelling Excellence Award 2023',
+    'Featured in Top 50 Content Creators by Industry Magazine',
+    'Successfully launched 5 digital publications',
+    'Mentored 200+ aspiring writers'
+  ]
+};
+
+// Mock posts for compatibility with existing pages
+export const mockPosts = [
+  { ...blogs[0], type: 'blog' as const, thumbnail: blogs[0].image, author: { id: '@manav', name: 'Manav', avatar: authorInfo.image }, tags: ['storytelling', 'digital', 'creativity'], summary: 'An exploration of how digital platforms are changing the way we tell stories.' },
+  { ...articles[0], type: 'article' as const, thumbnail: articles[0].image, author: { id: '@manav', name: 'Manav', avatar: authorInfo.image }, tags: ['connection', 'relationships', 'digital'], summary: 'Deep insights into building meaningful relationships in our modern world.' },
+  { ...blogs[1], type: 'blog' as const, thumbnail: blogs[1].image, author: { id: '@manav', name: 'Manav', avatar: authorInfo.image }, tags: ['mindfulness', 'peace', 'wellness'], summary: 'Finding peace and clarity in our fast-paced digital world.' },
+  { ...articles[1], type: 'article' as const, thumbnail: articles[1].image, author: { id: '@manav', name: 'Manav', avatar: authorInfo.image }, tags: ['growth', 'philosophy', 'wisdom'], summary: 'Exploring personal development through philosophical lenses.' },
+  { ...blogs[2], type: 'blog' as const, thumbnail: blogs[2].image, author: { id: '@manav', name: 'Manav', avatar: authorInfo.image }, tags: ['creativity', 'future', 'technology'], summary: 'How emerging technologies are reshaping artistic boundaries.' }
+];
+
+// Mock poems for compatibility with existing pages
+export const mockPoems = [
+  { ...poems[0], backgroundImage: poems[0].image },
+  { ...poems[1], backgroundImage: poems[1].image },
+  { ...poems[2], backgroundImage: poems[2].image }
+];
+
 // Combined posts for featured content
 export const featuredPosts = [
   { ...blogs[0], type: 'blog' as const },
