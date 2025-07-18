@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Edit, Trash2, Eye, Search } from 'lucide-react';
 import { useContentStore } from '../../stores/contentStore';
@@ -13,8 +13,12 @@ const AdminArticles = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
   
-  const { articles, createArticle, updateArticle, deleteArticle } = useContentStore();
+  const { articles, createArticle, updateArticle, deleteArticle, fetchArticles } = useContentStore();
   const { toast } = useToast();
+
+  useEffect(() => {
+    fetchArticles();
+  }, [fetchArticles]);
 
   const filteredArticles = articles.filter(article =>
     article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||

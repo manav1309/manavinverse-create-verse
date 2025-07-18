@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Edit, Trash2, Eye, Search } from 'lucide-react';
 import { useContentStore } from '../../stores/contentStore';
@@ -13,8 +13,12 @@ const AdminBlogs = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
   
-  const { blogs, createBlog, updateBlog, deleteBlog } = useContentStore();
+  const { blogs, createBlog, updateBlog, deleteBlog, fetchBlogs, loading } = useContentStore();
   const { toast } = useToast();
+
+  useEffect(() => {
+    fetchBlogs();
+  }, [fetchBlogs]);
 
   const filteredBlogs = blogs.filter(blog =>
     blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -26,33 +30,57 @@ const AdminBlogs = () => {
     setIsEditModalOpen(true);
   };
 
-  const handleDelete = (blogId) => {
+  const handleDelete = async (blogId) => {
     if (window.confirm('Are you sure you want to delete this blog post?')) {
-      deleteBlog(blogId);
+      try {
+        await deleteBlog(blogId);
+        toast({
+          title: "Success",
+          description: "Blog post deleted successfully",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to delete blog post. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const handleCreate = async (data) => {
+    try {
+      await createBlog(data);
+      setIsCreateModalOpen(false);
       toast({
-        title: "Success",
-        description: "Blog post deleted successfully",
+        title: "Success", 
+        description: "Blog post created successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create blog post. Please try again.",
+        variant: "destructive",
       });
     }
   };
 
-  const handleCreate = (data) => {
-    createBlog(data);
-    setIsCreateModalOpen(false);
-    toast({
-      title: "Success", 
-      description: "Blog post created successfully",
-    });
-  };
-
-  const handleUpdate = (data) => {
-    updateBlog(selectedBlog.id, data);
-    setIsEditModalOpen(false);
-    setSelectedBlog(null);
-    toast({
-      title: "Success",
-      description: "Blog post updated successfully",
-    });
+  const handleUpdate = async (data) => {
+    try {
+      await updateBlog(selectedBlog.id, data);
+      setIsEditModalOpen(false);
+      setSelectedBlog(null);
+      toast({
+        title: "Success",
+        description: "Blog post updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update blog post. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Edit, Trash2, Eye, Search } from 'lucide-react';
 import { useContentStore } from '../../stores/contentStore';
@@ -13,8 +13,12 @@ const AdminPoems = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedPoem, setSelectedPoem] = useState(null);
   
-  const { poems, createPoem, updatePoem, deletePoem } = useContentStore();
+  const { poems, createPoem, updatePoem, deletePoem, fetchPoems, loading } = useContentStore();
   const { toast } = useToast();
+
+  useEffect(() => {
+    fetchPoems();
+  }, [fetchPoems]);
 
   const filteredPoems = poems.filter(poem =>
     poem.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -26,33 +30,57 @@ const AdminPoems = () => {
     setIsEditModalOpen(true);
   };
 
-  const handleDelete = (poemId) => {
+  const handleDelete = async (poemId) => {
     if (window.confirm('Are you sure you want to delete this poem?')) {
-      deletePoem(poemId);
+      try {
+        await deletePoem(poemId);
+        toast({
+          title: "Success",
+          description: "Poem deleted successfully",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to delete poem. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const handleCreate = async (data) => {
+    try {
+      await createPoem(data);
+      setIsCreateModalOpen(false);
       toast({
         title: "Success",
-        description: "Poem deleted successfully",
+        description: "Poem created successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create poem. Please try again.",
+        variant: "destructive",
       });
     }
   };
 
-  const handleCreate = (data) => {
-    createPoem(data);
-    setIsCreateModalOpen(false);
-    toast({
-      title: "Success",
-      description: "Poem created successfully",
-    });
-  };
-
-  const handleUpdate = (data) => {
-    updatePoem(selectedPoem.id, data);
-    setIsEditModalOpen(false);
-    setSelectedPoem(null);
-    toast({
-      title: "Success",
-      description: "Poem updated successfully",
-    });
+  const handleUpdate = async (data) => {
+    try {
+      await updatePoem(selectedPoem.id, data);
+      setIsEditModalOpen(false);
+      setSelectedPoem(null);
+      toast({
+        title: "Success",
+        description: "Poem updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update poem. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
