@@ -2,15 +2,31 @@
 import { motion } from 'framer-motion';
 import { ArrowDown, BookOpen, PenTool, Heart } from 'lucide-react';
 import Carousel from '@/components/ui/carousel';
-import { mockPosts } from '@/data/mockData';
 import { Link } from 'react-router-dom';
+import { useContentStore } from '@/stores/contentStore';
+import { useEffect } from 'react';
 
 const Index = () => {
+  const { blogs, articles, poems, fetchBlogs, fetchArticles, fetchPoems, loading } = useContentStore();
+  
+  useEffect(() => {
+    fetchBlogs();
+    fetchArticles();
+    fetchPoems();
+  }, [fetchBlogs, fetchArticles, fetchPoems]);
+
   const scrollToFeatured = () => {
     document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const featuredPosts = mockPosts.slice(0, 3);
+  // Combine all content and take the first 3 for featured
+  const allContent = [
+    ...blogs.map(blog => ({ ...blog, type: 'blog' })),
+    ...articles.map(article => ({ ...article, type: 'article' })),
+    ...poems.map(poem => ({ ...poem, type: 'poem', excerpt: poem.preview }))
+  ];
+  
+  const featuredPosts = allContent.slice(0, 3);
 
   return (
     <div className="min-h-screen">
@@ -69,13 +85,16 @@ const Index = () => {
           </motion.div>
 
           <div className="max-w-4xl mx-auto">
-            <Carousel autoSlide={5000}>
-              {featuredPosts.map((post) => (
+            {loading ? (
+              <div className="text-center">Loading...</div>
+            ) : featuredPosts.length > 0 ? (
+              <Carousel autoSlide={5000}>
+                {featuredPosts.map((post) => (
                 <div key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
                   <div className="md:flex">
                     <div className="md:w-1/3">
                       <img
-                        src={post.thumbnail}
+                        src={post.image || '/placeholder.svg'}
                         alt={post.title}
                         className="w-full h-64 md:h-full object-cover"
                       />
@@ -97,7 +116,7 @@ const Index = () => {
                         {post.excerpt}
                       </p>
                       <Link
-                        to={`/${post.type}s`}
+                        to={`/${post.type === 'poem' ? 'poems' : post.type + 's'}`}
                         className="inline-flex items-center space-x-2 bg-chocolate text-cream px-6 py-3 rounded-lg hover:bg-chocolate/90 transition-colors"
                       >
                         <span>Read More</span>
@@ -105,9 +124,12 @@ const Index = () => {
                       </Link>
                     </div>
                   </div>
-                </div>
-              ))}
-            </Carousel>
+                  </div>
+                ))}
+              </Carousel>
+            ) : (
+              <div className="text-center text-gray-500">No content available yet.</div>
+            )}
           </div>
         </div>
       </section>

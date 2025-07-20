@@ -1,12 +1,18 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar } from 'lucide-react';
 import Modal from '@/components/ui/modal';
-import { mockPoems, authorInfo } from '@/data/mockData';
+import { authorInfo } from '@/data/mockData';
+import { useContentStore } from '@/stores/contentStore';
 
 const Poems = () => {
   const [selectedPoem, setSelectedPoem] = useState(null);
+  const { poems, fetchPoems, loading } = useContentStore();
+  
+  useEffect(() => {
+    fetchPoems();
+  }, [fetchPoems]);
 
   const openPoem = (poem) => {
     setSelectedPoem(poem);
@@ -54,8 +60,11 @@ const Poems = () => {
       {/* Poem Teasers */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="space-y-8">
-            {mockPoems.map((poem, index) => (
+          {loading ? (
+            <div className="text-center">Loading...</div>
+          ) : (
+            <div className="space-y-8">
+              {poems.map((poem, index) => (
               <motion.div
                 key={poem.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -67,7 +76,7 @@ const Poems = () => {
                 <div
                   className="h-64 bg-cover bg-center relative"
                   style={{
-                    backgroundImage: `linear-gradient(rgba(61, 44, 44, 0.7), rgba(61, 44, 44, 0.7)), url(${poem.backgroundImage})`,
+                    backgroundImage: `linear-gradient(rgba(61, 44, 44, 0.7), rgba(61, 44, 44, 0.7)), url(${poem.image || '/placeholder.svg'})`,
                   }}
                 >
                   <div className="absolute inset-0 flex items-center justify-center text-center text-white p-8">
@@ -80,7 +89,7 @@ const Poems = () => {
                       </p>
                       <div className="flex items-center justify-center text-sm text-cream">
                         <Calendar size={14} className="mr-2" />
-                        <span>{new Date(poem.date).toLocaleDateString()}</span>
+                        <span>{poem.date}</span>
                       </div>
                     </div>
                   </div>
@@ -90,8 +99,9 @@ const Poems = () => {
                   </div>
                 </div>
               </motion.div>
-            ))}
-          </div>
+                ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -105,7 +115,7 @@ const Poems = () => {
           <div
             className="relative min-h-96 bg-cover bg-center"
             style={{
-              backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url(${selectedPoem.backgroundImage})`,
+              backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url(${selectedPoem.image || '/placeholder.svg'})`,
             }}
           >
             <div className="p-8 md:p-12">
@@ -115,7 +125,7 @@ const Poems = () => {
                 </h1>
                 <div className="flex items-center justify-center text-sm text-gray-600">
                   <Calendar size={14} className="mr-2" />
-                  <span>{new Date(selectedPoem.date).toLocaleDateString()}</span>
+                  <span>{selectedPoem.date}</span>
                 </div>
               </div>
               

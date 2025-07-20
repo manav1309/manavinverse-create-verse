@@ -1,14 +1,18 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, User, Clock } from 'lucide-react';
 import Modal from '@/components/ui/modal';
-import { mockPosts, authorInfo } from '@/data/mockData';
+import { authorInfo } from '@/data/mockData';
+import { useContentStore } from '@/stores/contentStore';
 
 const Blogs = () => {
   const [selectedPost, setSelectedPost] = useState(null);
+  const { blogs, fetchBlogs, loading } = useContentStore();
   
-  const blogPosts = mockPosts.filter(post => post.type === 'blog');
+  useEffect(() => {
+    fetchBlogs();
+  }, [fetchBlogs]);
 
   const openPost = (post) => {
     setSelectedPost(post);
@@ -56,8 +60,11 @@ const Blogs = () => {
       {/* Blog Posts Grid */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
+          {loading ? (
+            <div className="text-center">Loading...</div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {blogs.map((post, index) => (
               <motion.div
                 key={post.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -68,7 +75,7 @@ const Blogs = () => {
               >
                 <div className="relative">
                   <img
-                    src={post.thumbnail}
+                    src={post.image || '/placeholder.svg'}
                     alt={post.title}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
@@ -82,9 +89,9 @@ const Blogs = () => {
                 <div className="p-6">
                   <div className="flex items-center text-sm text-gray-500 mb-3">
                     <Calendar size={14} className="mr-1" />
-                    <span className="mr-4">{new Date(post.date).toLocaleDateString()}</span>
+                    <span className="mr-4">{post.date}</span>
                     <User size={14} className="mr-1" />
-                    <span>{post.author.id}</span>
+                    <span>{post.author}</span>
                   </div>
                   
                   <h3 className="text-xl font-serif font-bold text-chocolate mb-3 group-hover:text-chocolate/80 transition-colors">
@@ -106,8 +113,9 @@ const Blogs = () => {
                   </div>
                 </div>
               </motion.div>
-            ))}
-          </div>
+                ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -126,18 +134,18 @@ const Blogs = () => {
               <div className="flex items-center space-x-4 text-sm text-gray-600 mb-4">
                 <div className="flex items-center">
                   <img
-                    src={selectedPost.author.avatar}
-                    alt={selectedPost.author.name}
+                    src={authorInfo.image}
+                    alt={authorInfo.name}
                     className="w-8 h-8 rounded-full mr-2"
                   />
-                  <span>{selectedPost.author.name} {selectedPost.author.id}</span>
+                  <span>{selectedPost.author}</span>
                 </div>
-                <span>{new Date(selectedPost.date).toLocaleDateString()}</span>
+                <span>{selectedPost.date}</span>
               </div>
-              {selectedPost.summary && (
+              {selectedPost.excerpt && (
                 <div className="bg-cream p-4 rounded-lg mb-6">
-                  <h3 className="font-semibold text-chocolate mb-2">Summary</h3>
-                  <p className="text-charcoal">{selectedPost.summary}</p>
+                  <h3 className="font-semibold text-chocolate mb-2">Excerpt</h3>
+                  <p className="text-charcoal">{selectedPost.excerpt}</p>
                 </div>
               )}
             </div>
@@ -148,18 +156,6 @@ const Blogs = () => {
               </div>
             </div>
             
-            <div className="mt-8 pt-6 border-t border-gray-200">
-              <div className="flex flex-wrap gap-2">
-                {selectedPost.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            </div>
           </div>
         )}
       </Modal>
