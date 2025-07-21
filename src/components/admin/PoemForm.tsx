@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Save, X } from 'lucide-react';
+import { sanitizeHtml, sanitizeText } from '@/utils/sanitize';
 
 interface PoemFormProps {
   poem?: any;
@@ -31,7 +32,16 @@ const PoemForm = ({ poem, onClose, onSave }: PoemFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    
+    // Sanitize form data before saving
+    const sanitizedData = {
+      ...formData,
+      title: sanitizeText(formData.title),
+      content: sanitizeHtml(formData.content),
+      preview: sanitizeText(formData.preview),
+    };
+    
+    onSave(sanitizedData);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

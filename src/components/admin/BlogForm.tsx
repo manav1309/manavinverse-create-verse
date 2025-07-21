@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Save, X } from 'lucide-react';
+import { sanitizeHtml, sanitizeText } from '@/utils/sanitize';
 
 interface BlogFormProps {
   blog?: any;
@@ -33,7 +34,17 @@ const BlogForm = ({ blog, onClose, onSave }: BlogFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    
+    // Sanitize form data before saving
+    const sanitizedData = {
+      ...formData,
+      title: sanitizeText(formData.title),
+      excerpt: sanitizeText(formData.excerpt),
+      content: sanitizeHtml(formData.content),
+      author: sanitizeText(formData.author),
+    };
+    
+    onSave(sanitizedData);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

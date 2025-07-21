@@ -1,8 +1,9 @@
 
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogOut, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/hooks/useAuth';
 
 interface HeaderProps {
   isScrolled: boolean;
@@ -11,6 +12,7 @@ interface HeaderProps {
 const Header = ({ isScrolled }: HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -47,7 +49,7 @@ const Header = ({ isScrolled }: HeaderProps) => {
       <nav className="px-4 md:px-8 py-3">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8 ml-auto">
+          <div className="hidden md:flex items-center space-x-8 ml-auto">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -61,6 +63,33 @@ const Header = ({ isScrolled }: HeaderProps) => {
                 {link.label}
               </Link>
             ))}
+            
+            {/* Auth Actions */}
+            {user ? (
+              <div className="flex items-center space-x-4">
+                <Link
+                  to="/admin"
+                  className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-off-white hover:text-cream transition-colors"
+                >
+                  <Shield size={16} />
+                  <span>Admin</span>
+                </Link>
+                <button
+                  onClick={signOut}
+                  className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-off-white hover:text-cream transition-colors"
+                >
+                  <LogOut size={16} />
+                  <span>Logout</span>
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/auth"
+                className="px-4 py-2 text-sm font-medium text-off-white hover:text-cream transition-colors"
+              >
+                Login
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -98,6 +127,38 @@ const Header = ({ isScrolled }: HeaderProps) => {
                   {link.label}
                 </Link>
               ))}
+              
+              {/* Mobile Auth Actions */}
+              {user ? (
+                <>
+                  <Link
+                    to="/admin"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center space-x-2 text-lg font-medium text-off-white hover:text-cream transition-colors"
+                  >
+                    <Shield size={20} />
+                    <span>Admin</span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      signOut();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="flex items-center space-x-2 text-lg font-medium text-off-white hover:text-cream transition-colors text-left"
+                  >
+                    <LogOut size={20} />
+                    <span>Logout</span>
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/auth"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-lg font-medium text-off-white hover:text-cream transition-colors"
+                >
+                  Login
+                </Link>
+              )}
             </nav>
           </motion.div>
         )}
