@@ -1,29 +1,23 @@
-
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Mail, Phone } from 'lucide-react';
-
 interface FooterProps {
   showAnimation?: boolean;
 }
-
-const Footer = ({ showAnimation = true }: FooterProps) => {
-  return (
-    <footer className="bg-chocolate text-cream mt-16">
+const Footer = ({
+  showAnimation = true
+}: FooterProps) => {
+  return <footer className="bg-chocolate text-cream mt-16">
       {/* Animated Contact Bar */}
-      {showAnimation && (
-        <div className="relative overflow-hidden bg-cream h-2">
-          <motion.div
-            className="absolute inset-0 bg-chocolate h-full"
-            animate={{ x: ['-100%', '100%'] }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: 'easeInOut'
-            }}
-          />
-        </div>
-      )}
+      {showAnimation && <div className="relative overflow-hidden bg-cream h-2">
+          <motion.div className="absolute inset-0 bg-chocolate h-full" animate={{
+        x: ['-100%', '100%']
+      }} transition={{
+        duration: 3,
+        repeat: Infinity,
+        ease: 'easeInOut'
+      }} />
+        </div>}
 
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid md:grid-cols-3 gap-8">
@@ -67,13 +61,11 @@ const Footer = ({ showAnimation = true }: FooterProps) => {
               </div>
               <div className="flex items-center space-x-2">
                 <Phone size={16} />
-                <span className="text-off-white/80">+1 (555) 123-4567</span>
+                <span className="text-off-white/80">+91 7973040390
+              </span>
               </div>
             </div>
-            <Link 
-              to="/contact"
-              className="inline-block mt-4 bg-cream text-charcoal px-4 py-2 rounded-md hover:bg-off-white transition-colors font-medium"
-            >
+            <Link to="/contact" className="inline-block mt-4 bg-cream text-charcoal px-4 py-2 rounded-md hover:bg-off-white transition-colors font-medium">
               Contact Us
             </Link>
           </div>
@@ -85,8 +77,6 @@ const Footer = ({ showAnimation = true }: FooterProps) => {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
