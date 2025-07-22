@@ -154,7 +154,7 @@ The soul begins to heal.`,
 // Author information
 export const authorInfo = {
   name: 'Manav',
-  image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
+  image: '/lovable-uploads/c376b84a-8f0d-4ebb-a72d-8a790be60be1.png',
   bio: 'A passionate writer and digital storyteller who explores the intersection of technology, creativity, and human experience. With over a decade of experience in crafting compelling narratives, Manav brings unique perspectives to contemporary issues through thoughtful prose and evocative poetry.',
   experience: [
     'Digital Content Strategy for Fortune 500 companies',
