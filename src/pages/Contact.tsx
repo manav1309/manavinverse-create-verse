@@ -212,7 +212,7 @@ const Contact = () => {
                   <Twitter size={24} className="text-blue-400" />
                   <div>
                     <p className="font-medium text-charcoal group-hover:text-chocolate">Twitter</p>
-                    <p className="text-sm text-gray-500">@manavinverse</p>
+                    <p className="text-sm text-gray-500">Manav Puri</p>
                   </div>
                 </a>
 
