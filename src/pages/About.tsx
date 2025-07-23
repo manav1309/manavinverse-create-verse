@@ -1,33 +1,34 @@
-
 import { motion } from 'framer-motion';
 import { Award, BookOpen, Users, Mic } from 'lucide-react';
 import { authorInfo } from '@/data/mockData';
-
 const About = () => {
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       {/* Banner */}
-      <section 
-        className="relative h-96 flex items-center justify-center bg-cover bg-center"
-        style={{
-          backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.6), rgba(61, 44, 44, 0.6)), url(/placeholder.svg)',
-        }}
-      >
+      <section className="relative h-96 flex items-center justify-center bg-cover bg-center" style={{
+      backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.6), rgba(61, 44, 44, 0.6)), url(/placeholder.svg)'
+    }}>
         <div className="text-center text-white z-10 max-w-4xl mx-auto px-4">
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl font-serif font-bold mb-6"
-          >
+          <motion.h1 initial={{
+          opacity: 0,
+          y: 30
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.8
+        }} className="text-4xl md:text-6xl font-serif font-bold mb-6">
             About the Journey
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg text-cream max-w-2xl mx-auto"
-          >
+          <motion.p initial={{
+          opacity: 0,
+          y: 30
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.8,
+          delay: 0.2
+        }} className="text-lg text-cream max-w-2xl mx-auto">
             Every story has a storyteller, every verse a voice. Welcome to the mind and heart behind ManavInVerse.
           </motion.p>
         </div>
@@ -38,32 +39,34 @@ const About = () => {
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Portrait */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="relative"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            x: -30
+          }} animate={{
+            opacity: 1,
+            x: 0
+          }} transition={{
+            duration: 0.8
+          }} className="relative">
               <div className="relative z-10">
-                <img
-                  src={authorInfo.image}
-                  alt={authorInfo.name}
-                  className="w-full max-w-md mx-auto rounded-lg shadow-xl"
-                />
+                <img src={authorInfo.image} alt={authorInfo.name} className="w-full max-w-md mx-auto rounded-lg shadow-xl" />
               </div>
-              <div 
-                className="absolute inset-0 bg-cover bg-center opacity-10 rounded-lg"
-                style={{ backgroundImage: 'url(/placeholder.svg)' }}
-              />
+              <div className="absolute inset-0 bg-cover bg-center opacity-10 rounded-lg" style={{
+              backgroundImage: 'url(/placeholder.svg)'
+            }} />
             </motion.div>
 
             {/* Bio Content */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="space-y-6"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            x: 30
+          }} animate={{
+            opacity: 1,
+            x: 0
+          }} transition={{
+            duration: 0.8,
+            delay: 0.2
+          }} className="space-y-6">
               <div>
                 <h2 className="text-3xl font-serif font-bold text-chocolate mb-4">
                   Meet {authorInfo.name}
@@ -80,12 +83,10 @@ const About = () => {
                   Experience
                 </h3>
                 <ul className="space-y-2">
-                  {authorInfo.experience.map((item, index) => (
-                    <li key={index} className="flex items-start">
+                  {authorInfo.experience.map((item, index) => <li key={index} className="flex items-start">
                       <div className="w-2 h-2 bg-chocolate rounded-full mt-2 mr-3 flex-shrink-0" />
                       <span className="text-charcoal">{item}</span>
-                    </li>
-                  ))}
+                    </li>)}
                 </ul>
               </div>
 
@@ -96,12 +97,10 @@ const About = () => {
                   Achievements
                 </h3>
                 <ul className="space-y-2">
-                  {authorInfo.achievements.map((item, index) => (
-                    <li key={index} className="flex items-start">
+                  {authorInfo.achievements.map((item, index) => <li key={index} className="flex items-start">
                       <div className="w-2 h-2 bg-chocolate rounded-full mt-2 mr-3 flex-shrink-0" />
                       <span className="text-charcoal">{item}</span>
-                    </li>
-                  ))}
+                    </li>)}
                 </ul>
               </div>
             </motion.div>
@@ -113,56 +112,71 @@ const About = () => {
       <section className="py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 30
+          }} whileInView={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.6
+          }} className="text-center">
               <div className="bg-chocolate text-cream w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <BookOpen size={24} />
               </div>
-              <h3 className="text-2xl font-bold text-chocolate mb-2">150+</h3>
-              <p className="text-charcoal">Published Pieces</p>
+              <h3 className="text-2xl font-bold text-chocolate mb-2">2100+</h3>
+              <p className="text-charcoal font-semibold">Written Pieces</p>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-center"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 30
+          }} whileInView={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.6,
+            delay: 0.1
+          }} className="text-center">
               <div className="bg-chocolate text-cream w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Users size={24} />
               </div>
-              <h3 className="text-2xl font-bold text-chocolate mb-2">100K+</h3>
-              <p className="text-charcoal">Readers Worldwide</p>
+              <h3 className="text-2xl font-bold text-chocolate mb-2">35+</h3>
+              <p className="text-charcoal font-semibold">Stage Appearnces</p>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-center"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 30
+          }} whileInView={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.6,
+            delay: 0.2
+          }} className="text-center">
               <div className="bg-chocolate text-cream w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Award size={24} />
               </div>
-              <h3 className="text-2xl font-bold text-chocolate mb-2">5+</h3>
-              <p className="text-charcoal">Literary Awards</p>
+              <h3 className="text-2xl font-bold text-chocolate mb-2">3+</h3>
+              <p className="text-charcoal text-base font-semibold">Years Experience</p>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-center"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 30
+          }} whileInView={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.6,
+            delay: 0.3
+          }} className="text-center">
               <div className="bg-chocolate text-cream w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Mic size={24} />
               </div>
               <h3 className="text-2xl font-bold text-chocolate mb-2">25+</h3>
-              <p className="text-charcoal">Speaking Events</p>
+              <p className="text-charcoal">Written and Spoken Societies' Experience</p>
             </motion.div>
           </div>
         </div>
@@ -171,11 +185,15 @@ const About = () => {
       {/* Philosophy Section */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.8
+        }}>
             <h2 className="text-3xl font-serif font-bold text-chocolate mb-8">
               Writing Philosophy
             </h2>
@@ -189,8 +207,6 @@ const About = () => {
           </motion.div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default About;
