@@ -146,7 +146,7 @@ const Index = () => {
             duration: 0.6
           }} className="text-center p-8 rounded-lg hover:shadow-lg transition-shadow relative overflow-hidden"
           style={{
-            backgroundImage: 'linear-gradient(rgba(139, 69, 19, 0.4), rgba(139, 69, 19, 0.4)), url(/lovable-uploads/2c5ebb97-6955-4289-959e-58c661eec6bc.png)',
+            backgroundImage: 'linear-gradient(rgba(139, 69, 19, 0.4), rgba(139, 69, 19, 0.4)), url(/lovable-uploads/165c6897-3209-490b-9bdb-1b1578a0f739.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}>
