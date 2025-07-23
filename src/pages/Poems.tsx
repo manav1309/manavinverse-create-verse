@@ -44,9 +44,7 @@ const Poems = () => {
               <p className="text-off-white/80 font-bold">Poet & Wordsmith</p>
             </div>
           </div>
-          <p className="text-lg text-cream max-w-2xl mx-auto">
-            A collection of verses that capture moments, emotions, and the fleeting beauty of human experience.
-          </p>
+          <p className="text-lg text-cream max-w-2xl mx-auto font-medium">The words are poured from the ink of the pen just like honey, and the poets are the weavers of the silky threads of feelings.</p>
         </div>
       </section>
 
