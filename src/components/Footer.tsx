@@ -72,9 +72,7 @@ const Footer = ({
         </div>
 
         <div className="border-t border-cream/20 mt-8 pt-8 text-center">
-          <p className="text-off-white/60">
-            © 2024 ManavInVerse. All rights reserved.
-          </p>
+          <p className="text-off-white/60">© 2025 ManavInVerse. All rights reserved.</p>
         </div>
       </div>
     </footer>;
