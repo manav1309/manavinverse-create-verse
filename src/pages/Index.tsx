@@ -52,7 +52,7 @@ const Index = () => {
           y: 0
         }} transition={{
           duration: 0.8
-        }} className="text-5xl md:text-7xl font-serif font-bold mb-6">Welcome to my Universe</motion.h1>
+        }} className="text-5xl font-serif font-bold mb-6 text-justify md:text-7xl">Welcome to my Universe</motion.h1>
           <motion.p initial={{
           opacity: 0,
           y: 30
@@ -62,7 +62,7 @@ const Index = () => {
         }} transition={{
           duration: 0.8,
           delay: 0.2
-        }} className="text-xl md:text-2xl mb-8 text-cream">
+        }} className="text-xl md:text-2xl mb-8 text-cream font-semibold">
             Where words become worlds and stories find their home
           </motion.p>
           <motion.button initial={{
