@@ -178,9 +178,7 @@ const Index = () => {
                 <PenTool size={24} />
               </div>
               <h3 className="font-serif font-bold text-cream mb-4 text-3xl">Poetry</h3>
-              <p className="text-cream mb-6 font-bold">
-                Experience the rhythm and soul of carefully crafted verses
-              </p>
+              <p className="text-cream mb-6 font-bold">Words are not mere verses; they are honey dripping from the ✒️</p>
               <Link to="/poems" className="text-cream hover:text-cream/80 font-medium inline-flex items-center space-x-1">
                 <span>Read Poetry</span>
                 <ArrowDown size={16} className="rotate-[-90deg]" />
