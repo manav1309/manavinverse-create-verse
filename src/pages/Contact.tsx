@@ -220,7 +220,7 @@ const Contact = () => {
                   <Instagram size={24} className="text-pink-600" />
                   <div>
                     <p className="font-medium text-charcoal group-hover:text-chocolate">Instagram</p>
-                    <p className="text-sm text-gray-500">@manavinverse</p>
+                    <p className="text-sm text-gray-500">@manav.in.verses</p>
                   </div>
                 </a>
 
