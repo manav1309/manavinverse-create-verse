@@ -93,10 +93,10 @@ const Index = () => {
         }} transition={{
           duration: 0.6
         }} className="text-center mb-12">
-            <h2 className="text-4xl font-serif font-bold text-chocolate mb-4">
+            <h2 className="text-4xl font-serif mb-4 font-bold text-amber-100">
               Featured Works
             </h2>
-            <p className="text-lg text-charcoal max-w-2xl mx-auto">
+            <p className="max-w-2xl mx-auto text-amber-100 text-lg font-bold">
               Explore the latest stories, insights, and poetry from ManavInVerse
             </p>
           </motion.div>
