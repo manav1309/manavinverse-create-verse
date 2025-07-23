@@ -172,15 +172,20 @@ const Index = () => {
           }} transition={{
             duration: 0.6,
             delay: 0.1
-          }} className="text-center p-8 rounded-lg hover:shadow-lg transition-shadow">
+          }} className="text-center p-8 rounded-lg hover:shadow-lg transition-shadow relative overflow-hidden"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(139, 69, 19, 0.4), rgba(139, 69, 19, 0.4)), url(/lovable-uploads/4f53a926-3f07-4dac-b1e2-eb33a40ea82f.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}>
               <div className="bg-chocolate text-cream w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <PenTool size={24} />
               </div>
-              <h3 className="text-xl font-serif font-bold text-chocolate mb-4">Poetry</h3>
-              <p className="text-charcoal mb-6">
+              <h3 className="text-xl font-serif font-bold text-cream mb-4">Poetry</h3>
+              <p className="text-cream mb-6">
                 Experience the rhythm and soul of carefully crafted verses
               </p>
-              <Link to="/poems" className="text-chocolate hover:text-chocolate/80 font-medium inline-flex items-center space-x-1">
+              <Link to="/poems" className="text-cream hover:text-cream/80 font-medium inline-flex items-center space-x-1">
                 <span>Read Poetry</span>
                 <ArrowDown size={16} className="rotate-[-90deg]" />
               </Link>
