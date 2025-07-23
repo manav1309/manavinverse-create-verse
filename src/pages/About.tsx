@@ -197,9 +197,7 @@ const About = () => {
             <h2 className="text-3xl font-serif font-bold text-chocolate mb-8">
               Writing Philosophy
             </h2>
-            <blockquote className="text-xl italic text-charcoal leading-relaxed mb-8 px-0">"The greatest gift given to humanity by God is words." 
-उस दौर की तरह हमें भी भुला दिया जाए,   
-उसके फूल सलामत हैं, हमें मगर जला दिया जाए। 🥀</blockquote>
+            <blockquote className="text-xl italic text-charcoal leading-relaxed mb-8 px-0">"The greatest gift given to humanity by God is words. I have sailed the boats of words through the turbulent seas of fear, pain, and peace. And I found a home at the shore of poems."  उस दौर की तरह हमें भी भुला दिया जाए,    उसके फूल सलामत हैं, हमें मगर जला दिया जाए। 🥀</blockquote>
             <p className="text-chocolate font-medium">— {authorInfo.name}</p>
           </motion.div>
         </div>
