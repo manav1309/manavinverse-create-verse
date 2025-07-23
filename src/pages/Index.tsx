@@ -34,7 +34,7 @@ const Index = () => {
       <section 
         className="relative h-screen flex items-center justify-center bg-cover bg-center"
         style={{
-          backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.7), rgba(61, 44, 44, 0.7)), url(/placeholder.svg)',
+          backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.6), rgba(61, 44, 44, 0.6)), url(/lovable-uploads/390e7104-ca6f-438c-b925-a2c214c1ed0c.png)',
         }}
       >
         <div className="text-center text-white z-10 max-w-4xl mx-auto px-4">
