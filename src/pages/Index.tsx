@@ -144,8 +144,7 @@ const Index = () => {
             y: 0
           }} transition={{
             duration: 0.6
-          }} className="text-center p-8 rounded-lg hover:shadow-lg transition-shadow relative overflow-hidden"
-          style={{
+          }} className="text-center p-8 rounded-lg hover:shadow-lg transition-shadow relative overflow-hidden" style={{
             backgroundImage: 'linear-gradient(rgba(139, 69, 19, 0.4), rgba(139, 69, 19, 0.4)), url(/lovable-uploads/165c6897-3209-490b-9bdb-1b1578a0f739.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center'
@@ -154,9 +153,7 @@ const Index = () => {
                 <BookOpen size={24} />
               </div>
               <h3 className="text-xl font-serif font-bold text-cream mb-4">Blogs & Articles</h3>
-              <p className="text-cream mb-6">
-                Dive deep into thought-provoking essays and contemporary insights
-              </p>
+              <p className="text-cream mb-6 font-bold">Dive deep into thought-provoking contemporary insights</p>
               <Link to="/blogs" className="text-cream hover:text-cream/80 font-medium inline-flex items-center space-x-1">
                 <span>Explore Blogs</span>
                 <ArrowDown size={16} className="rotate-[-90deg]" />
@@ -172,8 +169,7 @@ const Index = () => {
           }} transition={{
             duration: 0.6,
             delay: 0.1
-          }} className="text-center p-8 rounded-lg hover:shadow-lg transition-shadow relative overflow-hidden"
-          style={{
+          }} className="text-center p-8 rounded-lg hover:shadow-lg transition-shadow relative overflow-hidden" style={{
             backgroundImage: 'linear-gradient(rgba(139, 69, 19, 0.4), rgba(139, 69, 19, 0.4)), url(/lovable-uploads/4f53a926-3f07-4dac-b1e2-eb33a40ea82f.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center'
@@ -181,8 +177,8 @@ const Index = () => {
               <div className="bg-chocolate text-cream w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <PenTool size={24} />
               </div>
-              <h3 className="text-xl font-serif font-bold text-cream mb-4">Poetry</h3>
-              <p className="text-cream mb-6">
+              <h3 className="font-serif font-bold text-cream mb-4 text-3xl">Poetry</h3>
+              <p className="text-cream mb-6 font-bold">
                 Experience the rhythm and soul of carefully crafted verses
               </p>
               <Link to="/poems" className="text-cream hover:text-cream/80 font-medium inline-flex items-center space-x-1">
