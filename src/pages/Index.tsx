@@ -82,7 +82,7 @@ const Index = () => {
       </section>
 
       {/* Featured Content Section */}
-      <section id="featured" className="py-16 bg-gray-50">
+      <section id="featured" className="py-16 bg-gradient-to-br from-chocolate to-cream">
         <div className="max-w-7xl mx-auto px-4">
           <motion.div initial={{
           opacity: 0,
