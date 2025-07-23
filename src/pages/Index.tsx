@@ -144,15 +144,20 @@ const Index = () => {
             y: 0
           }} transition={{
             duration: 0.6
-          }} className="text-center p-8 rounded-lg hover:shadow-lg transition-shadow">
-              <div className="bg-chocolate text-cream w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+          }} className="text-center p-8 rounded-lg hover:shadow-lg transition-shadow relative overflow-hidden"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(139, 69, 19, 0.8), rgba(139, 69, 19, 0.8)), url(/lovable-uploads/e8b49bdb-4c8b-4d48-ad5f-87c00e4bf06c.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}>
+              <div className="bg-cream text-chocolate w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <BookOpen size={24} />
               </div>
-              <h3 className="text-xl font-serif font-bold text-chocolate mb-4">Blogs & Articles</h3>
-              <p className="text-charcoal mb-6">
+              <h3 className="text-xl font-serif font-bold text-cream mb-4">Blogs & Articles</h3>
+              <p className="text-cream mb-6">
                 Dive deep into thought-provoking essays and contemporary insights
               </p>
-              <Link to="/blogs" className="text-chocolate hover:text-chocolate/80 font-medium inline-flex items-center space-x-1">
+              <Link to="/blogs" className="text-cream hover:text-cream/80 font-medium inline-flex items-center space-x-1">
                 <span>Explore Blogs</span>
                 <ArrowDown size={16} className="rotate-[-90deg]" />
               </Link>
