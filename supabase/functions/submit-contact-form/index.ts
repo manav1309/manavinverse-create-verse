@@ -75,7 +75,7 @@ serve(async (req) => {
     }
 
     // Append data to Google Sheets
-    const spreadsheetId = '1_Lhlms7QTLaxZNSH8SI5LHzGXA37G47quFluz16VVjs';
+    const spreadsheetId = '1dq2OElLgo9xLJymmlimegZfaSFp3I1tueadvEha5HSc';
     const range = 'Sheet1!A:E'; // Assuming columns: Name, Email, Phone, Message, Timestamp
 
     const timestamp = new Date().toISOString();
