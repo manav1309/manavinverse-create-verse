@@ -23,7 +23,7 @@ const Poems = () => {
   return <div className="min-h-screen">
       {/* Intro Banner */}
       <section className="relative h-96 flex items-center justify-center bg-cover bg-center" style={{
-      backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.6), rgba(61, 44, 44, 0.6)), url(/placeholder.svg)'
+      backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.6), rgba(61, 44, 44, 0.6)), url(/lovable-uploads/de91bcb0-b712-49a2-8ec5-ce5ea4383861.png)'
     }}>
         <div className="text-center text-white z-10 max-w-4xl mx-auto px-4">
           <motion.h1 initial={{
