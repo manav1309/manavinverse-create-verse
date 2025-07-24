@@ -23,7 +23,7 @@ const Blogs = () => {
   return <div className="min-h-screen">
       {/* Intro Banner */}
       <section className="relative h-96 flex items-center justify-center bg-cover bg-center" style={{
-      backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.6), rgba(61, 44, 44, 0.6)), url(/lovable-uploads/5802191b-6132-4fa7-86e2-d0309c90a3c1.png)'
+      backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.6), rgba(61, 44, 44, 0.6)), url(/lovable-uploads/588e96d3-9adf-4db5-bc8c-1728fc1dfa6c.png)'
     }}>
         <div className="text-center text-white z-10 max-w-4xl mx-auto px-4">
           <motion.h1 initial={{
