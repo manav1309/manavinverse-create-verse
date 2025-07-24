@@ -164,6 +164,36 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_submissions: {
+        Row: {
+          email: string
+          google_sheets_synced: boolean | null
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          submitted_at: string
+        }
+        Insert: {
+          email: string
+          google_sheets_synced?: boolean | null
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          submitted_at?: string
+        }
+        Update: {
+          email?: string
+          google_sheets_synced?: boolean | null
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          submitted_at?: string
+        }
+        Relationships: []
+      }
       genres: {
         Row: {
           created_at: string
