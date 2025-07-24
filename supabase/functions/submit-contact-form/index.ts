@@ -14,11 +14,17 @@ serve(async (req) => {
   }
 
   try {
+    console.log('Starting contact form submission...');
+    
     const body = await req.text();
+    console.log('Request body received:', body);
+    
     const { name, email, phone, message } = body ? JSON.parse(body) : {};
+    console.log('Parsed data:', { name, email, phone: phone ? 'provided' : 'empty', message: message ? 'provided' : 'empty' });
 
     // Validate required fields
     if (!name || !email || !message) {
+      console.log('Validation failed - missing required fields');
       return new Response(
         JSON.stringify({ error: 'Name, email, and message are required' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -30,6 +36,8 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    console.log('Saving to Supabase database...');
+    
     // Save to Supabase as backup
     const { error: dbError } = await supabase
       .from('contact_submissions')
@@ -43,88 +51,18 @@ serve(async (req) => {
 
     if (dbError) {
       console.error('Database error:', dbError);
+      throw new Error('Failed to save to database: ' + dbError.message);
     }
 
-    // Get Google Service Account credentials
-    const credentialsJson = Deno.env.get('GOOGLE_SERVICE_ACCOUNT_CREDENTIALS');
-    if (!credentialsJson) {
-      console.error('Google Service Account credentials not configured');
-      throw new Error('Google Service Account credentials not configured');
-    }
+    console.log('Successfully saved to database');
 
-    let credentials;
+    // Try Google Sheets integration (but don't fail if it doesn't work)
     try {
-      credentials = JSON.parse(credentialsJson);
-    } catch (parseError) {
-      console.error('Failed to parse Google credentials:', parseError);
-      throw new Error('Invalid Google Service Account credentials format');
-    }
-
-    // Create JWT for Google API authentication
-    let jwt;
-    try {
-      jwt = await createJWT(credentials);
-    } catch (jwtError) {
-      console.error('Failed to create JWT:', jwtError);
-      throw new Error('Failed to create authentication token');
-    }
-    
-    // Get access token from Google
-    const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-        assertion: jwt,
-      }),
-    });
-
-    if (!tokenResponse.ok) {
-      const errorText = await tokenResponse.text();
-      console.error('Google token request failed:', tokenResponse.status, errorText);
-      throw new Error(`Failed to get Google access token: ${tokenResponse.status}`);
-    }
-
-    const tokenData = await tokenResponse.json();
-    
-    if (!tokenData.access_token) {
-      console.error('No access token in response:', tokenData);
-      throw new Error('Failed to get Google access token: ' + JSON.stringify(tokenData));
-    }
-
-    // Append data to Google Sheets
-    const spreadsheetId = '1dq2OElLgo9xLJymmlimegZfaSFp3I1tueadvEha5HSc';
-    const range = 'Sheet1!A:E'; // Assuming columns: Name, Email, Phone, Message, Timestamp
-
-    const timestamp = new Date().toISOString();
-    const values = [[name, email, phone || '', message, timestamp]];
-
-    const sheetsResponse = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}:append?valueInputOption=RAW`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${tokenData.access_token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          values,
-        }),
-      }
-    );
-
-    if (!sheetsResponse.ok) {
-      const error = await sheetsResponse.text();
-      console.error('Google Sheets API error:', sheetsResponse.status, error);
-      throw new Error(`Failed to append to Google Sheets: ${sheetsResponse.status} - ${error}`);
-    }
-
-    console.log('Successfully appended to Google Sheets');
-
-    // Update the database record to mark as synced
-    if (!dbError) {
+      console.log('Attempting Google Sheets integration...');
+      await appendToGoogleSheets(name, email, phone, message);
+      console.log('Successfully synced to Google Sheets');
+      
+      // Update the record to mark as synced
       await supabase
         .from('contact_submissions')
         .update({ google_sheets_synced: true })
@@ -132,9 +70,13 @@ serve(async (req) => {
         .eq('name', name)
         .order('submitted_at', { ascending: false })
         .limit(1);
+        
+    } catch (sheetsError) {
+      console.error('Google Sheets error (non-critical):', sheetsError);
+      // Don't fail the whole request if Google Sheets fails
     }
 
-    console.log('Contact form submitted successfully:', { name, email });
+    console.log('Contact form submission completed successfully');
 
     return new Response(
       JSON.stringify({ 
@@ -147,30 +89,7 @@ serve(async (req) => {
     );
 
   } catch (error) {
-    console.error('Error in submit-contact-form function:', error);
-    
-    // Save to database even if Google Sheets fails
-    if (req.method === 'POST') {
-      try {
-        const body = await req.text();
-        const { name, email, phone, message } = body ? JSON.parse(body) : {};
-        
-        if (name && email && message) {
-          const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-          const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-          const supabase = createClient(supabaseUrl, supabaseServiceKey);
-          
-          await supabase.from('contact_submissions').insert({
-            name, email, phone: phone || null, message, google_sheets_synced: false
-          });
-          
-          console.log('Saved to database despite Google Sheets error');
-        }
-      } catch (dbError) {
-        console.error('Failed to save to database as fallback:', dbError);
-      }
-    }
-    
+    console.error('Critical error in submit-contact-form function:', error);
     return new Response(
       JSON.stringify({ 
         error: 'Failed to submit contact form',
@@ -183,6 +102,67 @@ serve(async (req) => {
     );
   }
 });
+
+// Separate function for Google Sheets integration
+async function appendToGoogleSheets(name: string, email: string, phone: string | null, message: string) {
+  // Get Google Service Account credentials
+  const credentialsJson = Deno.env.get('GOOGLE_SERVICE_ACCOUNT_CREDENTIALS');
+  if (!credentialsJson) {
+    throw new Error('Google Service Account credentials not configured');
+  }
+
+  const credentials = JSON.parse(credentialsJson);
+
+  // Create JWT for Google API authentication
+  const jwt = await createJWT(credentials);
+  
+  // Get access token from Google
+  const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: jwt,
+    }),
+  });
+
+  if (!tokenResponse.ok) {
+    const errorText = await tokenResponse.text();
+    throw new Error(`Google token request failed: ${tokenResponse.status} - ${errorText}`);
+  }
+
+  const tokenData = await tokenResponse.json();
+  
+  if (!tokenData.access_token) {
+    throw new Error('No access token received from Google');
+  }
+
+  // Append data to Google Sheets
+  const spreadsheetId = '1dq2OElLgo9xLJymmlimegZfaSFp3I1tueadvEha5HSc';
+  const range = 'Sheet1!A:E';
+
+  const timestamp = new Date().toISOString();
+  const values = [[name, email, phone || '', message, timestamp]];
+
+  const sheetsResponse = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}:append?valueInputOption=RAW`,
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${tokenData.access_token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ values }),
+    }
+  );
+
+  if (!sheetsResponse.ok) {
+    const error = await sheetsResponse.text();
+    throw new Error(`Google Sheets API error: ${sheetsResponse.status} - ${error}`);
+  }
+}
 
 // Helper function to create JWT for Google API
 async function createJWT(credentials: any): Promise<string> {
