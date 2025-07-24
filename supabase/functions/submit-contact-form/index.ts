@@ -53,25 +53,8 @@ serve(async (req) => {
 
     const credentials = JSON.parse(credentialsJson);
 
-    // Create JWT for Google Sheets API
-    const now = Math.floor(Date.now() / 1000);
-    const payload = {
-      iss: credentials.client_email,
-      scope: 'https://www.googleapis.com/auth/spreadsheets',
-      aud: 'https://oauth2.googleapis.com/token',
-      exp: now + 3600,
-      iat: now,
-    };
-
-    // Create JWT header and payload
-    const header = btoa(JSON.stringify({ alg: 'RS256', typ: 'JWT' }));
-    const payloadEncoded = btoa(JSON.stringify(payload));
-
-    // Sign JWT (simplified - using a crypto library would be better for production)
-    const privateKey = credentials.private_key;
-    
-    // For simplicity, we'll use Google's OAuth2 token endpoint with assertion
-    const assertion = `${header}.${payloadEncoded}`;
+    // Create JWT for Google API authentication
+    const jwt = await createJWT(credentials);
     
     // Get access token from Google
     const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
@@ -81,14 +64,14 @@ serve(async (req) => {
       },
       body: new URLSearchParams({
         grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-        assertion: await createJWT(credentials),
+        assertion: jwt,
       }),
     });
 
     const tokenData = await tokenResponse.json();
     
     if (!tokenData.access_token) {
-      throw new Error('Failed to get Google access token');
+      throw new Error('Failed to get Google access token: ' + JSON.stringify(tokenData));
     }
 
     // Append data to Google Sheets
