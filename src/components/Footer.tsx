@@ -28,13 +28,13 @@ const Footer = ({
               Exploring the depths of human experience through words, stories, and poetry.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-cream hover:text-off-white transition-colors">
+              <a href="https://www.linkedin.com/in/manavprofile" target="_blank" rel="noopener noreferrer" className="text-cream hover:text-off-white transition-colors">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="text-cream hover:text-off-white transition-colors">
+              <a href="https://x.com/IManav8?t=i0y-rO3geYmsBsCFhv7DWg&s=09" target="_blank" rel="noopener noreferrer" className="text-cream hover:text-off-white transition-colors">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="text-cream hover:text-off-white transition-colors">
+              <a href="https://www.instagram.com/manav.__13?igsh=ZWJtNHY4bW1wbHph" target="_blank" rel="noopener noreferrer" className="text-cream hover:text-off-white transition-colors">
                 <Instagram size={20} />
               </a>
             </div>
