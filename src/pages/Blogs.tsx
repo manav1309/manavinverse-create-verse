@@ -40,11 +40,11 @@ const Blogs = () => {
           <div className="flex items-center justify-center space-x-4 mb-4">
             <img src={authorInfo.image} alt={authorInfo.name} className="w-16 h-16 rounded-full border-2 border-cream" />
             <div className="text-left">
-              <p className="text-cream text-lg font-medium">{authorInfo.name}</p>
-              <p className="text-off-white/80">Digital Storyteller & Writer</p>
+              <p className="text-cream font-extrabold text-2xl">{authorInfo.name}</p>
+              <p className="text-off-white/80 font-bold">Digital Storyteller & Writer</p>
             </div>
           </div>
-          <p className="text-lg text-cream max-w-2xl mx-auto font-semibold">Exploring the intersection of creativity and human experience through thoughtful narratives and insights.</p>
+          <p className="text-cream max-w-2xl mx-auto font-semibold text-lg">Exploring the intersection of creativity and human experience through thoughtful narratives and insights.</p>
         </div>
       </section>
 
