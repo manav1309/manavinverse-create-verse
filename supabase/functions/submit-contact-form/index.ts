@@ -48,13 +48,26 @@ serve(async (req) => {
     // Get Google Service Account credentials
     const credentialsJson = Deno.env.get('GOOGLE_SERVICE_ACCOUNT_CREDENTIALS');
     if (!credentialsJson) {
+      console.error('Google Service Account credentials not configured');
       throw new Error('Google Service Account credentials not configured');
     }
 
-    const credentials = JSON.parse(credentialsJson);
+    let credentials;
+    try {
+      credentials = JSON.parse(credentialsJson);
+    } catch (parseError) {
+      console.error('Failed to parse Google credentials:', parseError);
+      throw new Error('Invalid Google Service Account credentials format');
+    }
 
     // Create JWT for Google API authentication
-    const jwt = await createJWT(credentials);
+    let jwt;
+    try {
+      jwt = await createJWT(credentials);
+    } catch (jwtError) {
+      console.error('Failed to create JWT:', jwtError);
+      throw new Error('Failed to create authentication token');
+    }
     
     // Get access token from Google
     const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
@@ -68,9 +81,16 @@ serve(async (req) => {
       }),
     });
 
+    if (!tokenResponse.ok) {
+      const errorText = await tokenResponse.text();
+      console.error('Google token request failed:', tokenResponse.status, errorText);
+      throw new Error(`Failed to get Google access token: ${tokenResponse.status}`);
+    }
+
     const tokenData = await tokenResponse.json();
     
     if (!tokenData.access_token) {
+      console.error('No access token in response:', tokenData);
       throw new Error('Failed to get Google access token: ' + JSON.stringify(tokenData));
     }
 
@@ -97,9 +117,11 @@ serve(async (req) => {
 
     if (!sheetsResponse.ok) {
       const error = await sheetsResponse.text();
-      console.error('Google Sheets API error:', error);
-      throw new Error(`Failed to append to Google Sheets: ${error}`);
+      console.error('Google Sheets API error:', sheetsResponse.status, error);
+      throw new Error(`Failed to append to Google Sheets: ${sheetsResponse.status} - ${error}`);
     }
+
+    console.log('Successfully appended to Google Sheets');
 
     // Update the database record to mark as synced
     if (!dbError) {
@@ -126,6 +148,29 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in submit-contact-form function:', error);
+    
+    // Save to database even if Google Sheets fails
+    if (req.method === 'POST') {
+      try {
+        const body = await req.text();
+        const { name, email, phone, message } = body ? JSON.parse(body) : {};
+        
+        if (name && email && message) {
+          const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+          const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+          const supabase = createClient(supabaseUrl, supabaseServiceKey);
+          
+          await supabase.from('contact_submissions').insert({
+            name, email, phone: phone || null, message, google_sheets_synced: false
+          });
+          
+          console.log('Saved to database despite Google Sheets error');
+        }
+      } catch (dbError) {
+        console.error('Failed to save to database as fallback:', dbError);
+      }
+    }
+    
     return new Response(
       JSON.stringify({ 
         error: 'Failed to submit contact form',
