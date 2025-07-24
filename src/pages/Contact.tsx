@@ -47,8 +47,8 @@ const Contact = () => {
   return <div className="min-h-screen">
       {/* Hero Header */}
       <section style={{
-      backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.3), rgba(61, 44, 44, 0.3)), url(/placeholder.svg)'
-    }} className="relative h-screen flex items-center justify-center bg-cover bg-center bg-[#866d68]">
+      backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.3), rgba(61, 44, 44, 0.3)), url(/lovable-uploads/1d70d9b6-dd48-4db2-bb61-c140abf48f38.png)'
+    }} className="relative h-96 flex items-center justify-center bg-cover bg-center bg-[#866d68]">
         <div className="text-center z-10">
           <motion.div initial={{
           opacity: 0,
