@@ -18,7 +18,7 @@ import {
   MessageCircle,
   LogOut
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { Button } from '@/components/ui/button';
 
 interface AdminLayoutProps {
@@ -29,11 +29,11 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { signOut, user } = useAuth();
+  const { signOut } = useAdminAuth();
 
   const handleLogout = async () => {
-    await signOut();
-    navigate('/');
+    signOut();
+    navigate('/admin-auth');
   };
 
   const navigationItems = [
@@ -108,7 +108,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">Welcome back,</span>
-              <span className="font-semibold text-chocolate">{user?.email?.split('@')[0] || 'Admin'}</span>
+              <span className="font-semibold text-chocolate">Admin</span>
               <Button
                 onClick={handleLogout}
                 variant="outline"
