@@ -46,9 +46,9 @@ const Contact = () => {
   };
   return <div className="min-h-screen">
       {/* Hero Header */}
-      <section className="relative h-screen flex items-center justify-center bg-cover bg-center" style={{
+      <section style={{
       backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.3), rgba(61, 44, 44, 0.3)), url(/placeholder.svg)'
-    }}>
+    }} className="relative h-screen flex items-center justify-center bg-cover bg-center bg-yellow-950">
         <div className="text-center z-10">
           <motion.div initial={{
           opacity: 0,
@@ -58,7 +58,7 @@ const Contact = () => {
           scale: 1
         }} transition={{
           duration: 0.8
-        }} className="bg-white/10 backdrop-blur-sm rounded-lg p-8 max-w-md mx-auto">
+        }} className="backdrop-blur-sm rounded-lg p-8 max-w-md mx-auto bg-[#725625]">
             <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-4">
               ManavInVerse
             </h1>
