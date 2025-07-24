@@ -153,20 +153,23 @@ The soul begins to heal.`,
 
 // Author information
 export const authorInfo = {
-  name: 'Manav',
+  name: 'Manav Puri',
   image: '/lovable-uploads/390e7104-ca6f-438c-b925-a2c214c1ed0c.png',
-  bio: 'A passionate writer and digital storyteller who explores the intersection of technology, creativity, and human experience. With over a decade of experience in crafting compelling narratives, Manav brings unique perspectives to contemporary issues through thoughtful prose and evocative poetry.',
+  bio: "Hi, I'm Manav Puri — a writer, performer, and community storyteller. With over 2 years of experience in content writing across university projects, international collaborations, and a tech startup, I bring words to life through 2100+ poems, 4 stage plays, and stories that spark connection. Whether leading India's largest university theatre festival as Promotion Head, performing spoken word on 30+ stages, or interviewing top dignitaries as an independent journalist, I write to connect, express, and inspire.",
   experience: [
-    'Digital Content Strategy for Fortune 500 companies',
-    'Published author with 3 books and 100+ articles',
-    'Creative Writing Workshop facilitator',
-    'Keynote speaker at international conferences'
+    "Content Writer for Chitkara University's Entrepreneurship Cell & Global Department",
+    'Web content and social media writer at assistive-tech startup (4 months)',
+    "Promotion Head of Rangrezz'24 – managed 75-day campaign, led hospitality & logistics",
+    'Performed 2100+ poems and 4 stage plays across 30+ events and festivals',
+    'Independent journalist at DU Lit Fest 2025 – interviewed dignitaries, covered events',
+    'Organized and promoted 15+ cultural events, including open-mics and street plays'
   ],
   achievements: [
-    'Winner of the Digital Storytelling Excellence Award 2023',
-    'Featured in Top 50 Content Creators by Industry Magazine',
-    'Successfully launched 5 digital publications',
-    'Mentored 200+ aspiring writers'
+    'Performed live poetry at Laugh Club Chandigarh and alongside RJ Shanky',
+    "Led outreach that secured 60% of national participation for Rangrezz'24",
+    'Represented university in North Zone AIU Youth Festival (Debate)',
+    'Built community through 3 street-play campaigns and 2 flash mobs',
+    'Interviewed prominent public figures including Smt. Smriti Irani and EU MPs'
   ]
 };
 
