@@ -5,7 +5,7 @@ const About = () => {
   return <div className="min-h-screen">
       {/* Banner */}
       <section className="relative h-96 flex items-center justify-center bg-cover bg-center" style={{
-      backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.6), rgba(61, 44, 44, 0.6)), url(/placeholder.svg)'
+      backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.6), rgba(61, 44, 44, 0.6)), url(/lovable-uploads/7c92874b-01e6-4842-bc84-261168369ec7.png)'
     }}>
         <div className="text-center text-white z-10 max-w-4xl mx-auto px-4">
           <motion.h1 initial={{
