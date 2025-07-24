@@ -14,7 +14,8 @@ import {
   BookOpen,
   Newspaper,
   Heart,
-  Tag
+  Tag,
+  MessageCircle
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -31,6 +32,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { title: 'Articles', path: '/admin/articles', icon: Newspaper },
     { title: 'Poems', path: '/admin/poems', icon: Heart },
     { title: 'Genres', path: '/admin/genres', icon: Tag },
+    { title: 'Contact Submissions', path: '/admin/contacts', icon: MessageCircle },
     { title: 'Media Library', path: '/admin/media', icon: Upload },
     { title: 'Analytics', path: '/admin/analytics', icon: BarChart3 },
     { title: 'Users', path: '/admin/users', icon: Users },
