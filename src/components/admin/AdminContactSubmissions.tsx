@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Download, FileText, Users, Calendar, RefreshCw, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,36 +7,51 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { exportToCSV, exportToJSON, type ContactSubmission } from '@/utils/csvExport';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const AdminContactSubmissions = () => {
-  const [submissions, setSubmissions] = useState<ContactSubmission[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  const fetchSubmissions = async () => {
-    try {
-      // Use service role key for admin access to bypass RLS
+  // Fetch submissions with React Query
+  const { data: submissions = [], isLoading, error, refetch } = useQuery({
+    queryKey: ['contact-submissions'],
+    queryFn: async () => {
       const { data, error } = await supabase.functions.invoke('get-contact-submissions');
-
       if (error) throw error;
-      setSubmissions(data || []);
-    } catch (error) {
-      console.error('Error fetching submissions:', error);
+      return data as ContactSubmission[];
+    },
+    staleTime: 1000 * 60 * 2, // 2 minutes
+  });
+
+  // Delete mutation
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .delete()
+        .eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['contact-submissions'] });
+      toast({
+        title: "Deleted",
+        description: "Contact submission deleted successfully"
+      });
+    },
+    onError: (error) => {
+      console.error('Error deleting submission:', error);
       toast({
         title: "Error",
-        description: "Failed to fetch contact submissions",
+        description: "Failed to delete submission",
         variant: "destructive"
       });
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
     }
-  };
+  });
 
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await fetchSubmissions();
+  const handleRefresh = () => {
+    refetch();
   };
 
   const handleExportCSV = () => {
@@ -57,33 +72,19 @@ const AdminContactSubmissions = () => {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this submission?')) return;
-
-    try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      setSubmissions(prev => prev.filter(sub => sub.id !== id));
-      toast({
-        title: "Deleted",
-        description: "Contact submission deleted successfully"
-      });
-    } catch (error) {
-      console.error('Error deleting submission:', error);
-      toast({
-        title: "Error",
-        description: "Failed to delete submission",
-        variant: "destructive"
-      });
-    }
+    deleteMutation.mutate(id);
   };
 
-  useEffect(() => {
-    fetchSubmissions();
-  }, []);
+  if (error) {
+    return (
+      <div className="p-6 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Failed to load contact submissions</p>
+          <Button onClick={handleRefresh}>Try Again</Button>
+        </div>
+      </div>
+    );
+  }
 
   const stats = [
     { 
@@ -114,7 +115,7 @@ const AdminContactSubmissions = () => {
     },
   ];
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="p-6 flex items-center justify-center">
         <RefreshCw className="h-8 w-8 animate-spin text-chocolate" />
@@ -132,10 +133,10 @@ const AdminContactSubmissions = () => {
         <div className="flex gap-2">
           <Button 
             onClick={handleRefresh} 
-            disabled={refreshing}
+            disabled={isLoading}
             variant="outline"
           >
-            <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
           <Button onClick={handleExportCSV} className="bg-green-600 hover:bg-green-700">

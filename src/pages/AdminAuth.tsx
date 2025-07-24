@@ -34,13 +34,16 @@ const AdminAuth = () => {
         throw error;
       }
 
-      if (data.valid) {
+      if (data?.valid) {
         localStorage.setItem('admin_authenticated', 'true');
+        // Trigger storage event for useAdminAuth hook
+        window.dispatchEvent(new Event('storage'));
         toast({
           title: "Success",
           description: "Signed in successfully!",
         });
-        navigate('/admin');
+        // Force navigation with reload to ensure admin context updates
+        window.location.href = '/admin';
       } else {
         toast({
           title: "Error",
