@@ -2,11 +2,12 @@
 import { useState, useEffect } from 'react';
 import { Save, X } from 'lucide-react';
 import { sanitizeHtml, sanitizeText } from '@/utils/sanitize';
+import GenreSelector from '@/components/GenreSelector';
 
 interface PoemFormProps {
   poem?: any;
   onClose: () => void;
-  onSave: (data: any) => void;
+  onSave: (data: any, genreIds?: string[]) => void;
 }
 
 const PoemForm = ({ poem, onClose, onSave }: PoemFormProps) => {
@@ -17,6 +18,7 @@ const PoemForm = ({ poem, onClose, onSave }: PoemFormProps) => {
     image: '',
     status: 'published'
   });
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
   useEffect(() => {
     if (poem) {
@@ -41,7 +43,7 @@ const PoemForm = ({ poem, onClose, onSave }: PoemFormProps) => {
       preview: sanitizeText(formData.preview),
     };
     
-    onSave(sanitizedData);
+    onSave(sanitizedData, selectedGenres);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -145,6 +147,11 @@ const PoemForm = ({ poem, onClose, onSave }: PoemFormProps) => {
             <option value="scheduled">Scheduled</option>
           </select>
         </div>
+
+        <GenreSelector
+          selectedGenres={selectedGenres}
+          onSelectionChange={setSelectedGenres}
+        />
 
         <div className="flex justify-end space-x-4 pt-4 border-t">
           <button

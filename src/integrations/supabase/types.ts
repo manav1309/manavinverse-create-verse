@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      article_genres: {
+        Row: {
+          article_id: string
+          created_at: string
+          genre_id: string
+          id: string
+        }
+        Insert: {
+          article_id: string
+          created_at?: string
+          genre_id: string
+          id?: string
+        }
+        Update: {
+          article_id?: string
+          created_at?: string
+          genre_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_genres_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "article_genres_genre_id_fkey"
+            columns: ["genre_id"]
+            isOneToOne: false
+            referencedRelation: "genres"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       articles: {
         Row: {
           author: string
@@ -53,6 +89,42 @@ export type Database = {
         }
         Relationships: []
       }
+      blog_genres: {
+        Row: {
+          blog_id: string
+          created_at: string
+          genre_id: string
+          id: string
+        }
+        Insert: {
+          blog_id: string
+          created_at?: string
+          genre_id: string
+          id?: string
+        }
+        Update: {
+          blog_id?: string
+          created_at?: string
+          genre_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_genres_blog_id_fkey"
+            columns: ["blog_id"]
+            isOneToOne: false
+            referencedRelation: "blogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_genres_genre_id_fkey"
+            columns: ["genre_id"]
+            isOneToOne: false
+            referencedRelation: "genres"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blogs: {
         Row: {
           author: string
@@ -91,6 +163,69 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      genres: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      poem_genres: {
+        Row: {
+          created_at: string
+          genre_id: string
+          id: string
+          poem_id: string
+        }
+        Insert: {
+          created_at?: string
+          genre_id: string
+          id?: string
+          poem_id: string
+        }
+        Update: {
+          created_at?: string
+          genre_id?: string
+          id?: string
+          poem_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "poem_genres_genre_id_fkey"
+            columns: ["genre_id"]
+            isOneToOne: false
+            referencedRelation: "genres"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "poem_genres_poem_id_fkey"
+            columns: ["poem_id"]
+            isOneToOne: false
+            referencedRelation: "poems"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       poems: {
         Row: {

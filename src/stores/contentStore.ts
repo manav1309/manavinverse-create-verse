@@ -2,30 +2,42 @@ import { create } from 'zustand';
 import { supabase } from '@/integrations/supabase/client';
 import { Blog, Article, Poem } from '../data/mockData';
 
+interface Genre {
+  id: string;
+  name: string;
+  description: string | null;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
 interface ContentState {
   blogs: Blog[];
   articles: Article[];
   poems: Poem[];
+  genres: Genre[];
   loading: boolean;
   
   // Data fetching
   fetchBlogs: () => Promise<void>;
   fetchArticles: () => Promise<void>;
   fetchPoems: () => Promise<void>;
+  fetchGenres: () => Promise<void>;
+  fetchContentByGenre: (genreId: string, contentType: 'blogs' | 'articles' | 'poems') => Promise<any[]>;
   
   // Blog operations
-  createBlog: (blog: Omit<Blog, 'id' | 'date' | 'slug'>) => Promise<void>;
-  updateBlog: (id: string, blog: Partial<Blog>) => Promise<void>;
+  createBlog: (blog: Omit<Blog, 'id' | 'date' | 'slug'>, genreIds?: string[]) => Promise<void>;
+  updateBlog: (id: string, blog: Partial<Blog>, genreIds?: string[]) => Promise<void>;
   deleteBlog: (id: string) => Promise<void>;
   
   // Article operations
-  createArticle: (article: Omit<Article, 'id' | 'date' | 'slug'>) => Promise<void>;
-  updateArticle: (id: string, article: Partial<Article>) => Promise<void>;
+  createArticle: (article: Omit<Article, 'id' | 'date' | 'slug'>, genreIds?: string[]) => Promise<void>;
+  updateArticle: (id: string, article: Partial<Article>, genreIds?: string[]) => Promise<void>;
   deleteArticle: (id: string) => Promise<void>;
   
   // Poem operations
-  createPoem: (poem: Omit<Poem, 'id' | 'date' | 'slug'>) => Promise<void>;
-  updatePoem: (id: string, poem: Partial<Poem>) => Promise<void>;
+  createPoem: (poem: Omit<Poem, 'id' | 'date' | 'slug'>, genreIds?: string[]) => Promise<void>;
+  updatePoem: (id: string, poem: Partial<Poem>, genreIds?: string[]) => Promise<void>;
   deletePoem: (id: string) => Promise<void>;
 }
 
@@ -35,6 +47,7 @@ export const useContentStore = create<ContentState>((set, get) => ({
   blogs: [],
   articles: [],
   poems: [],
+  genres: [],
   loading: false,
 
   // Data fetching
@@ -121,8 +134,53 @@ export const useContentStore = create<ContentState>((set, get) => ({
     }
   },
 
+  fetchGenres: async () => {
+    try {
+      const { data, error } = await supabase
+        .from('genres')
+        .select('*')
+        .order('display_order', { ascending: true });
+
+      if (error) throw error;
+      set({ genres: data || [] });
+    } catch (error) {
+      console.error('Error fetching genres:', error);
+    }
+  },
+
+  fetchContentByGenre: async (genreId: string, contentType: 'blogs' | 'articles' | 'poems') => {
+    try {
+      if (contentType === 'blogs') {
+        const { data, error } = await supabase
+          .from('blog_genres')
+          .select('blogs (*)')
+          .eq('genre_id', genreId);
+        if (error) throw error;
+        return data?.map(item => item.blogs) || [];
+      } else if (contentType === 'articles') {
+        const { data, error } = await supabase
+          .from('article_genres')
+          .select('articles (*)')
+          .eq('genre_id', genreId);
+        if (error) throw error;
+        return data?.map(item => item.articles) || [];
+      } else if (contentType === 'poems') {
+        const { data, error } = await supabase
+          .from('poem_genres')
+          .select('poems (*)')
+          .eq('genre_id', genreId);
+        if (error) throw error;
+        return data?.map(item => item.poems) || [];
+      }
+      return [];
+    } catch (error) {
+      console.error('Error fetching content by genre:', error);
+      return [];
+    }
+  },
+
   // Blog operations
-  createBlog: async (blogData) => {
+  createBlog: async (blogData, genreIds) => {
     try {
       const slug = generateSlug(blogData.title);
       const { data, error } = await (supabase as any)
@@ -140,6 +198,20 @@ export const useContentStore = create<ContentState>((set, get) => ({
         .single();
 
       if (error) throw error;
+
+      // Assign genres if provided
+      if (genreIds && genreIds.length > 0) {
+        const genreAssignments = genreIds.map(genreId => ({
+          blog_id: data.id,
+          genre_id: genreId
+        }));
+
+        const { error: genreError } = await supabase
+          .from('blog_genres')
+          .insert(genreAssignments);
+
+        if (genreError) throw genreError;
+      }
 
       const newBlog = {
         id: data.id,
@@ -159,7 +231,7 @@ export const useContentStore = create<ContentState>((set, get) => ({
     }
   },
 
-  updateBlog: async (id, blogData) => {
+  updateBlog: async (id, blogData, genreIds) => {
     try {
       const updateData: any = { ...blogData };
       if (blogData.title) {
@@ -174,6 +246,29 @@ export const useContentStore = create<ContentState>((set, get) => ({
         .single();
 
       if (error) throw error;
+
+      // Update genre assignments if provided
+      if (genreIds !== undefined) {
+        // Delete existing assignments
+        await supabase
+          .from('blog_genres')
+          .delete()
+          .eq('blog_id', id);
+
+        // Add new assignments
+        if (genreIds.length > 0) {
+          const genreAssignments = genreIds.map(genreId => ({
+            blog_id: id,
+            genre_id: genreId
+          }));
+
+          const { error: genreError } = await supabase
+            .from('blog_genres')
+            .insert(genreAssignments);
+
+          if (genreError) throw genreError;
+        }
+      }
 
       const updatedBlog = {
         id: data.id,
@@ -214,7 +309,7 @@ export const useContentStore = create<ContentState>((set, get) => ({
   },
 
   // Article operations
-  createArticle: async (articleData) => {
+  createArticle: async (articleData, genreIds) => {
     try {
       const slug = generateSlug(articleData.title);
       const { data, error } = await (supabase as any)
@@ -232,6 +327,20 @@ export const useContentStore = create<ContentState>((set, get) => ({
         .single();
 
       if (error) throw error;
+
+      // Assign genres if provided
+      if (genreIds && genreIds.length > 0) {
+        const genreAssignments = genreIds.map(genreId => ({
+          article_id: data.id,
+          genre_id: genreId
+        }));
+
+        const { error: genreError } = await supabase
+          .from('article_genres')
+          .insert(genreAssignments);
+
+        if (genreError) throw genreError;
+      }
 
       const newArticle = {
         id: data.id,
@@ -251,7 +360,7 @@ export const useContentStore = create<ContentState>((set, get) => ({
     }
   },
 
-  updateArticle: async (id, articleData) => {
+  updateArticle: async (id, articleData, genreIds) => {
     try {
       const updateData: any = { ...articleData };
       if (articleData.title) {
@@ -266,6 +375,29 @@ export const useContentStore = create<ContentState>((set, get) => ({
         .single();
 
       if (error) throw error;
+
+      // Update genre assignments if provided
+      if (genreIds !== undefined) {
+        // Delete existing assignments
+        await supabase
+          .from('article_genres')
+          .delete()
+          .eq('article_id', id);
+
+        // Add new assignments
+        if (genreIds.length > 0) {
+          const genreAssignments = genreIds.map(genreId => ({
+            article_id: id,
+            genre_id: genreId
+          }));
+
+          const { error: genreError } = await supabase
+            .from('article_genres')
+            .insert(genreAssignments);
+
+          if (genreError) throw genreError;
+        }
+      }
 
       const updatedArticle = {
         id: data.id,
@@ -306,7 +438,7 @@ export const useContentStore = create<ContentState>((set, get) => ({
   },
 
   // Poem operations
-  createPoem: async (poemData) => {
+  createPoem: async (poemData, genreIds) => {
     try {
       const slug = generateSlug(poemData.title);
       const { data, error } = await (supabase as any)
@@ -322,6 +454,20 @@ export const useContentStore = create<ContentState>((set, get) => ({
         .single();
 
       if (error) throw error;
+
+      // Assign genres if provided
+      if (genreIds && genreIds.length > 0) {
+        const genreAssignments = genreIds.map(genreId => ({
+          poem_id: data.id,
+          genre_id: genreId
+        }));
+
+        const { error: genreError } = await supabase
+          .from('poem_genres')
+          .insert(genreAssignments);
+
+        if (genreError) throw genreError;
+      }
 
       const newPoem = {
         id: data.id,
@@ -340,7 +486,7 @@ export const useContentStore = create<ContentState>((set, get) => ({
     }
   },
 
-  updatePoem: async (id, poemData) => {
+  updatePoem: async (id, poemData, genreIds) => {
     try {
       const updateData: any = { ...poemData };
       if (poemData.title) {
@@ -355,6 +501,29 @@ export const useContentStore = create<ContentState>((set, get) => ({
         .single();
 
       if (error) throw error;
+
+      // Update genre assignments if provided
+      if (genreIds !== undefined) {
+        // Delete existing assignments
+        await supabase
+          .from('poem_genres')
+          .delete()
+          .eq('poem_id', id);
+
+        // Add new assignments
+        if (genreIds.length > 0) {
+          const genreAssignments = genreIds.map(genreId => ({
+            poem_id: id,
+            genre_id: genreId
+          }));
+
+          const { error: genreError } = await supabase
+            .from('poem_genres')
+            .insert(genreAssignments);
+
+          if (genreError) throw genreError;
+        }
+      }
 
       const updatedPoem = {
         id: data.id,

@@ -2,11 +2,12 @@
 import { useState, useEffect } from 'react';
 import { Save, X } from 'lucide-react';
 import { sanitizeHtml, sanitizeText } from '@/utils/sanitize';
+import GenreSelector from '@/components/GenreSelector';
 
 interface ArticleFormProps {
   article?: any;
   onClose: () => void;
-  onSave: (data: any) => void;
+  onSave: (data: any, genreIds?: string[]) => void;
 }
 
 const ArticleForm = ({ article, onClose, onSave }: ArticleFormProps) => {
@@ -18,6 +19,7 @@ const ArticleForm = ({ article, onClose, onSave }: ArticleFormProps) => {
     author: 'Manav',
     status: 'published'
   });
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
   useEffect(() => {
     if (article) {
@@ -44,7 +46,7 @@ const ArticleForm = ({ article, onClose, onSave }: ArticleFormProps) => {
       author: sanitizeText(formData.author),
     };
     
-    onSave(sanitizedData);
+    onSave(sanitizedData, selectedGenres);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -164,6 +166,11 @@ const ArticleForm = ({ article, onClose, onSave }: ArticleFormProps) => {
             </select>
           </div>
         </div>
+
+        <GenreSelector
+          selectedGenres={selectedGenres}
+          onSelectionChange={setSelectedGenres}
+        />
 
         <div className="flex justify-end space-x-4 pt-4 border-t">
           <button

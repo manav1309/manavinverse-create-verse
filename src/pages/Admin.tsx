@@ -4,6 +4,7 @@ import AdminDashboard from '../components/admin/AdminDashboard';
 import AdminBlogs from '../components/admin/AdminBlogs';
 import AdminArticles from '../components/admin/AdminArticles';
 import AdminPoems from '../components/admin/AdminPoems';
+import AdminGenres from '../components/admin/AdminGenres';
 import AdminLayout from '../components/admin/AdminLayout';
 
 const Admin = () => {
@@ -14,6 +15,7 @@ const Admin = () => {
         <Route path="/blogs" element={<AdminBlogs />} />
         <Route path="/articles" element={<AdminArticles />} />
         <Route path="/poems" element={<AdminPoems />} />
+        <Route path="/genres" element={<AdminGenres />} />
         <Route path="*" element={<Navigate to="/admin" replace />} />
       </Routes>
     </AdminLayout>
