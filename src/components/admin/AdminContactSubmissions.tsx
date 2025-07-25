@@ -16,8 +16,10 @@ const AdminContactSubmissions = () => {
 
   const fetchSubmissions = async () => {
     try {
-      // Use service role key for admin access to bypass RLS
-      const { data, error } = await supabase.functions.invoke('get-contact-submissions');
+      const { data, error } = await supabase
+        .from('contact_submissions')
+        .select('*')
+        .order('submitted_at', { ascending: false });
 
       if (error) throw error;
       setSubmissions(data || []);
