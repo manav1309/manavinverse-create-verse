@@ -47,9 +47,9 @@ const Header = ({ isScrolled }: HeaderProps) => {
 
       {/* Navigation */}
       <nav className="px-4 md:px-8 py-3">
-        <div className="max-w-7xl mx-auto flex justify-center items-center">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8 ml-auto">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
