@@ -33,7 +33,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
   const handleLogout = async () => {
     signOut();
-    navigate('/');
+    navigate('/admin-auth');
   };
 
   const navigationItems = [
