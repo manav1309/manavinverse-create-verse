@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   Settings, 
@@ -15,11 +15,8 @@ import {
   Newspaper,
   Heart,
   Tag,
-  MessageCircle,
-  LogOut
+  MessageCircle
 } from 'lucide-react';
-import { useAdminAuth } from '@/hooks/useAdminAuth';
-import { Button } from '@/components/ui/button';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -28,13 +25,6 @@ interface AdminLayoutProps {
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
-  const { signOut } = useAdminAuth();
-
-  const handleLogout = async () => {
-    signOut();
-    navigate('/admin-auth');
-  };
 
   const navigationItems = [
     { title: 'Dashboard', path: '/admin', icon: BarChart3 },
@@ -108,16 +98,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">Welcome back,</span>
-              <span className="font-semibold text-chocolate">Admin</span>
-              <Button
-                onClick={handleLogout}
-                variant="outline"
-                size="sm"
-                className="ml-4"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
-              </Button>
+              <span className="font-semibold text-chocolate">Manav</span>
             </div>
           </div>
         </header>
