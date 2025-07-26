@@ -36,15 +36,15 @@ const Header = ({ isScrolled }: HeaderProps) => {
           : 'bg-chocolate/80 backdrop-blur-sm'
       }`}
     >
-      {/* Logo Section */}
-      <div className="text-center py-3 border-b border-cream/20">
-        <Link to="/" className="inline-block">
-          <h1 className="text-2xl md:text-3xl font-serif font-bold text-cream hover:text-off-white transition-colors">
-            ManavInVerse
-          </h1>
-        </Link>
-      </div>
-
+    {/* Logo Section */}
+<div className="text-center py-3 border-b border-cream/20">
+  <Link to="/" className="inline-flex items-center gap-x-3">
+    <img src="/favicon.ico" alt="ManavInVerse Logo" className="h-8 w-8 md:h-9 md:w-9 mt-2" />
+    <h1 className="text-2xl md:text-3xl font-serif font-bold text-cream hover:text-off-white transition-colors">
+      ManavInVerse
+    </h1>
+  </Link>
+</div>
       {/* Navigation */}
       <nav className="px-4 md:px-8 py-3">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
