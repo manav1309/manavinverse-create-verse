@@ -43,49 +43,49 @@ const Auth = () => {
     setLoading(false);
   };
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  // const handleSignUp = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setLoading(true);
     
-    const { error } = await signUp(email, password);
+  //   const { error } = await signUp(email, password);
     
-    if (error) {
-      toast({
-        title: "Error signing up",
-        description: error.message,
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Success",
-        description: "Account created! Please check your email to verify your account.",
-      });
-    }
-    setLoading(false);
-  };
+  //   if (error) {
+  //     toast({
+  //       title: "Error signing up",
+  //       description: error.message,
+  //       variant: "destructive",
+  //     });
+  //   } else {
+  //     toast({
+  //       title: "Success",
+  //       description: "Account created! Please check your email to verify your account.",
+  //     });
+  //   }
+  //   setLoading(false);
+  // };
 
-  const handleForgotPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setResetLoading(true);
+  // const handleForgotPassword = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setResetLoading(true);
     
-    const { error } = await resetPassword(resetEmail);
+  //   const { error } = await resetPassword(resetEmail);
     
-    if (error) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Reset email sent",
-        description: "Please check your email for password reset instructions.",
-      });
-      setShowResetDialog(false);
-      setResetEmail('');
-    }
-    setResetLoading(false);
-  };
+  //   if (error) {
+  //     toast({
+  //       title: "Error",
+  //       description: error.message,
+  //       variant: "destructive",
+  //     });
+  //   } else {
+  //     toast({
+  //       title: "Reset email sent",
+  //       description: "Please check your email for password reset instructions.",
+  //     });
+  //     setShowResetDialog(false);
+  //     setResetEmail('');
+  //   }
+  //   setResetLoading(false);
+  // };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -98,7 +98,7 @@ const Auth = () => {
           <Tabs defaultValue="signin" className="space-y-4">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              {/* <TabsTrigger value="signup">Sign Up</TabsTrigger> */}
             </TabsList>
             
             <TabsContent value="signin">
@@ -125,7 +125,7 @@ const Auth = () => {
                   {loading ? "Signing in..." : "Sign In"}
                 </Button>
                 
-                <div className="text-center">
+                {/* <div className="text-center">
                   <Dialog open={showResetDialog} onOpenChange={setShowResetDialog}>
                     <DialogTrigger asChild>
                       <Button variant="link" className="text-sm text-muted-foreground">
@@ -163,11 +163,11 @@ const Auth = () => {
                       </form>
                     </DialogContent>
                   </Dialog>
-                </div>
+                </div> */}
               </form>
             </TabsContent>
             
-            <TabsContent value="signup">
+            {/* <TabsContent value="signup">
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div>
                   <Input
@@ -192,7 +192,7 @@ const Auth = () => {
                   {loading ? "Creating account..." : "Sign Up"}
                 </Button>
               </form>
-            </TabsContent>
+            </TabsContent> */}
           </Tabs>
         </CardContent>
       </Card>
