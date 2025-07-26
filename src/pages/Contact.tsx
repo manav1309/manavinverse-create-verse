@@ -227,29 +227,29 @@ const Contact = () => {
                   </div>
                 </a>
 
-                <a href="#" className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:border-chocolate hover:bg-gray-50 transition-colors group">
-                  <Twitter size={24} className="text-blue-400" />
-                  <div>
-                    <p className="font-medium text-charcoal group-hover:text-chocolate">Twitter</p>
-                    <p className="text-sm text-gray-500">Manav Puri</p>
-                  </div>
-                </a>
+                <a href="https://x.com/IManav8?t=i0y-rO3geYmsBsCFhv7DWg&s=09" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:border-chocolate hover:bg-gray-50 transition-colors group">
+  <Twitter size={24} className="text-blue-400" />
+  <div>
+    <p className="font-medium text-charcoal group-hover:text-chocolate">Twitter</p>
+    <p className="text-sm text-gray-500">@IManav8</p>
+  </div>
+</a>
 
-                <a href="#" className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:border-chocolate hover:bg-gray-50 transition-colors group">
-                  <Instagram size={24} className="text-pink-600" />
-                  <div>
-                    <p className="font-medium text-charcoal group-hover:text-chocolate">Instagram</p>
-                    <p className="text-sm text-gray-500">@manav.in.verses</p>
-                  </div>
-                </a>
+<a href="https://www.instagram.com/manav.__13?igsh=ZWJtNHY4bW1wbHph" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:border-chocolate hover:bg-gray-50 transition-colors group">
+  <Instagram size={24} className="text-pink-600" />
+  <div>
+    <p className="font-medium text-charcoal group-hover:text-chocolate">Instagram</p>
+    <p className="text-sm text-gray-500">@manav.__13</p>
+  </div>
+</a>
 
-                <a href="#" className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:border-chocolate hover:bg-gray-50 transition-colors group">
-                  <Linkedin size={24} className="text-blue-700" />
-                  <div>
-                    <p className="font-medium text-charcoal group-hover:text-chocolate">LinkedIn</p>
-                    <p className="text-sm text-gray-500">Manav</p>
-                  </div>
-                </a>
+<a href="https://www.linkedin.com/in/manavprofile" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:border-chocolate hover:bg-gray-50 transition-colors group">
+  <Linkedin size={24} className="text-blue-700" />
+  <div>
+    <p className="font-medium text-charcoal group-hover:text-chocolate">LinkedIn</p>
+    <p className="text-sm text-gray-500">manavprofile</p>
+  </div>
+</a>
               </div>
             </motion.div>
           </div>
