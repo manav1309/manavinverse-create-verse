@@ -99,7 +99,7 @@ const Poems = () => {
           <div
             className="relative min-h-96 bg-cover bg-center"
             style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${selectedPoem.image || '/placeholder.svg'})`
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${selectedPoem.image || '/placeholder.svg'})`
             }}
           >
             <div className="p-8 md:p-12">
