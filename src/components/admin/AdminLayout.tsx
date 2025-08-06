@@ -56,13 +56,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       >
         <div className="flex items-center justify-between h-16 px-6 border-b border-cream/20">
           <a
-            href="https://manavinverse.netlify.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xl font-serif font-bold hover:underline"
-          >
-            ManavInVerse
-          </a>
+  href="https://manavinverse.netlify.app/"
+  className="text-xl font-serif font-bold hover:underline"
+>
+  ManavInVerse
+</a>
+
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden p-2 rounded-md hover:bg-cream/10"
