@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -56,7 +55,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         initial={false}
       >
         <div className="flex items-center justify-between h-16 px-6 border-b border-cream/20">
-          <h1 className="text-xl font-serif font-bold">ManavInVerse</h1>
+          <a
+            href="https://manavinverse.netlify.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xl font-serif font-bold hover:underline"
+          >
+            ManavInVerse
+          </a>
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden p-2 rounded-md hover:bg-cream/10"
