@@ -95,7 +95,7 @@ const Articles = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center text-sm text-gray-500">
                         <Clock size={14} className="mr-1" />
-                        <span>8 min read</span>
+                        <span>5 min read</span>
                       </div>
                       <span className="text-chocolate font-medium hover:text-chocolate/80 transition-colors">
                         Read More →
