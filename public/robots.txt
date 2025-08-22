@@ -1,3 +1,5 @@
+Sitemap: https://manavinverse.netlify.app/sitemap.xml
+
 User-agent: Googlebot
 Allow: /
 
