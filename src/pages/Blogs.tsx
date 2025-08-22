@@ -4,132 +4,191 @@ import { Calendar, User, Clock } from 'lucide-react';
 import Modal from '@/components/ui/modal';
 import { authorInfo } from '@/data/mockData';
 import { useContentStore } from '@/stores/contentStore';
+import { Helmet } from 'react-helmet-async';
+
 const Blogs = () => {
-  const [selectedPost, setSelectedPost] = useState(null);
-  const {
-    blogs,
-    fetchBlogs,
-    loading
-  } = useContentStore();
+  const [selectedPost, setSelectedPost] = useState<any>(null);
+  const { blogs, fetchBlogs, loading } = useContentStore();
+
   useEffect(() => {
     fetchBlogs();
   }, [fetchBlogs]);
-  const openPost = post => {
+
+  const openPost = (post: any) => {
     setSelectedPost(post);
   };
+
   const closePost = () => {
     setSelectedPost(null);
   };
-  return <div className="min-h-screen">
+
+  return (
+    <div className="min-h-screen">
+      {/* ✅ SEO + Meta tags */}
+      <Helmet>
+        <title>Blogs - ManavInVerse</title>
+        <meta
+          name="description"
+          content="Read insightful blogs from ManavInVerse — exploring creativity, literature, and the human experience."
+        />
+        <meta name="author" content="ManavInVerse" />
+
+        {/* Open Graph (for social media) */}
+        <meta property="og:title" content="Blogs - ManavInVerse" />
+        <meta
+          property="og:description"
+          content="Explore blogs, articles, and poetry from ManavInVerse. A space for thoughtful narratives and creativity."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content="https://res.cloudinary.com/dor5xrrgg/image/upload/v1753796695/Screenshot_2025-07-29_191433_qh9v1s.png"
+        />
+        <meta property="og:url" content="https://manavinverse.netlify.app/blogs" />
+
+        {/* Twitter Meta */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@manavInVerse" />
+        <meta
+          name="twitter:image"
+          content="https://res.cloudinary.com/dor5xrrgg/image/upload/v1753796695/Screenshot_2025-07-29_191433_qh9v1s.png"
+        />
+      </Helmet>
+
       {/* Intro Banner */}
-      <section className="relative h-96 flex items-center justify-center bg-cover bg-center" style={{
-      backgroundImage: 'linear-gradient(rgba(61, 44, 44, 0.6), rgba(61, 44, 44, 0.6)), url(/lovable-uploads/588e96d3-9adf-4db5-bc8c-1728fc1dfa6c.png)'
-    }}>
+      <section
+        className="relative h-96 flex items-center justify-center bg-cover bg-center"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(61, 44, 44, 0.6), rgba(61, 44, 44, 0.6)), url(/lovable-uploads/588e96d3-9adf-4db5-bc8c-1728fc1dfa6c.png)',
+        }}
+      >
         <div className="text-center text-white z-10 max-w-4xl mx-auto px-4">
-          <motion.h1 initial={{
-          opacity: 0,
-          y: 30
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.8
-        }} className="text-4xl md:text-6xl font-serif font-bold mb-6">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl md:text-6xl font-serif font-bold mb-6"
+          >
             Blogs
           </motion.h1>
+
           <div className="flex items-center justify-center space-x-4 mb-4">
-            <img src={authorInfo.image} alt={authorInfo.name} className="w-16 h-16 rounded-full border-2 border-cream" />
+            <img
+              src={authorInfo.image}
+              alt={authorInfo.name}
+              className="w-16 h-16 rounded-full border-2 border-cream"
+            />
             <div className="text-left">
               <p className="text-cream font-extrabold text-2xl">{authorInfo.name}</p>
               <p className="text-off-white/80 font-bold">Digital Storyteller & Writer</p>
             </div>
           </div>
-          <p className="text-cream max-w-2xl mx-auto font-semibold text-lg">Exploring the intersection of creativity and human experience through thoughtful narratives and insights.</p>
+
+          <p className="text-cream max-w-2xl mx-auto font-semibold text-lg">
+            Exploring the intersection of creativity and human experience through thoughtful
+            narratives and insights.
+          </p>
         </div>
       </section>
 
       {/* Blog Posts Grid */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
-          {loading ? <div className="text-center">Loading...</div> : <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {blogs.map((post, index) => <motion.div key={post.id} initial={{
-            opacity: 0,
-            y: 30
-          }} animate={{
-            opacity: 1,
-            y: 0
-          }} transition={{
-            duration: 0.6,
-            delay: index * 0.1
-          }} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group" onClick={() => openPost(post)}>
-                <div className="relative">
-                  <img src={post.image || '/placeholder.svg'} alt={post.title} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                      Blog
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <div className="flex items-center text-sm text-gray-500 mb-3">
-                    <Calendar size={14} className="mr-1" />
-                    <span className="mr-4">{post.date}</span>
-                    <User size={14} className="mr-1" />
-                    <span>{post.author}</span>
-                  </div>
-                  
-                  <h3 className="text-xl font-serif font-bold text-chocolate mb-3 group-hover:text-chocolate/80 transition-colors">
-                    {post.title}
-                  </h3>
-                  
-                  <p className="text-charcoal mb-4 leading-relaxed">
-                    {post.excerpt}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Clock size={14} className="mr-1" />
-                      <span>5 min read</span>
+          {loading ? (
+            <div className="text-center">Loading...</div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {blogs.map((post: any, index: number) => (
+                <motion.div
+                  key={post.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group"
+                  onClick={() => openPost(post)}
+                >
+                  <div className="relative">
+                    <img
+                      src={post.image || '/placeholder.svg'}
+                      alt={post.title}
+                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                        Blog
+                      </span>
                     </div>
-                    <span className="text-chocolate font-medium hover:text-chocolate/80 transition-colors">
-                      Read More →
-                    </span>
                   </div>
-                </div>
-              </motion.div>)}
-            </div>}
+
+                  <div className="p-6">
+                    <div className="flex items-center text-sm text-gray-500 mb-3">
+                      <Calendar size={14} className="mr-1" />
+                      <span className="mr-4">{post.date}</span>
+                      <User size={14} className="mr-1" />
+                      <span>{post.author}</span>
+                    </div>
+
+                    <h3 className="text-xl font-serif font-bold text-chocolate mb-3 group-hover:text-chocolate/80 transition-colors">
+                      {post.title}
+                    </h3>
+
+                    <p className="text-charcoal mb-4 leading-relaxed">{post.excerpt}</p>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Clock size={14} className="mr-1" />
+                        <span>5 min read</span>
+                      </div>
+                      <span className="text-chocolate font-medium hover:text-chocolate/80 transition-colors">
+                        Read More →
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Post Modal */}
       <Modal isOpen={!!selectedPost} onClose={closePost} className="max-w-4xl">
-        {selectedPost && <div className="p-8">
+        {selectedPost && (
+          <div className="p-8">
             <div className="mb-6">
               <h1 className="text-3xl font-serif font-bold text-chocolate mb-4">
                 {selectedPost.title}
               </h1>
               <div className="flex items-center space-x-4 text-sm text-gray-600 mb-4">
                 <div className="flex items-center">
-                  <img src={authorInfo.image} alt={authorInfo.name} className="w-8 h-8 rounded-full mr-2" />
+                  <img
+                    src={authorInfo.image}
+                    alt={authorInfo.name}
+                    className="w-8 h-8 rounded-full mr-2"
+                  />
                   <span>{selectedPost.author}</span>
                 </div>
                 <span>{selectedPost.date}</span>
               </div>
-              {selectedPost.excerpt && <div className="bg-cream p-4 rounded-lg mb-6">
+              {selectedPost.excerpt && (
+                <div className="bg-cream p-4 rounded-lg mb-6">
                   <h3 className="font-semibold text-chocolate mb-2">Excerpt</h3>
                   <p className="text-charcoal">{selectedPost.excerpt}</p>
-                </div>}
+                </div>
+              )}
             </div>
-            
+
             <div className="prose prose-lg max-w-none">
               <div className="whitespace-pre-wrap leading-relaxed text-charcoal">
                 {selectedPost.content}
               </div>
             </div>
-            
-          </div>}
+          </div>
+        )}
       </Modal>
-    </div>;
+    </div>
+  );
 };
+
 export default Blogs;
